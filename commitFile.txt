@@ -1936,7 +1936,7 @@ b7847d494068b1dc29e4c6c7d11c56a53ca001ef - src/nvidia/arch/nvalloc/unix/src/expo
 7420e2e65d31591654b6221256232a8ff103d86c - src/nvidia/arch/nvalloc/unix/src/osnvlink.c
 6e762bb7137f7b420e3ef21b515c8f871b4a7923 - src/nvidia/arch/nvalloc/unix/src/osinit.c
 013df3c505bc9abf1f352f34c37216475f2b2f1e - src/nvidia/arch/nvalloc/unix/src/dynamic-power.c
-831e7a3ab1aa78156e9ae6300b04d30ddee9ad81 - src/nvidia/arch/nvalloc/unix/src/osapi.c
+98d70df1910546ccf97c817e724361f6957057d2 - src/nvidia/arch/nvalloc/unix/src/osapi.c
 f7420db2d600fedbf2257ed0a55809b7bc356755 - src/nvidia/arch/nvalloc/unix/src/rmobjexportimport.c
 fb28e5999237ac4c8793c632dddf7f80557175d8 - src/nvidia/arch/nvalloc/unix/src/registry.c
 55fb5fb28ade57c974e02e8a24860e20edf552c9 - src/nvidia/arch/nvalloc/unix/src/unix_intr.c
