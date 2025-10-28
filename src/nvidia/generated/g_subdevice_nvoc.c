@@ -6261,12 +6261,12 @@ static const struct NVOC_EXPORTED_METHOD_DEF __nvoc_exported_method_def_Subdevic
 #endif
     },
     {               /*  [408] */
-#if NVOC_EXPORTED_METHOD_DISABLED_BY_FLAG(0x108u)
+#if NVOC_EXPORTED_METHOD_DISABLED_BY_FLAG(0x148u)
         /*pFunc=*/      (void (*)(void)) NULL,
 #else
         /*pFunc=*/      (void (*)(void)) subdeviceCtrlCmdFbGetCarveoutRegionInfo_IMPL,
-#endif // NVOC_EXPORTED_METHOD_DISABLED_BY_FLAG(0x108u)
-        /*flags=*/      0x108u,
+#endif // NVOC_EXPORTED_METHOD_DISABLED_BY_FLAG(0x148u)
+        /*flags=*/      0x148u,
         /*accessRight=*/0x0u,
         /*methodId=*/   0x20801360u,
         /*paramSize=*/  sizeof(NV2080_CTRL_FB_GET_CARVEOUT_REGION_INFO_PARAMS),
@@ -11019,7 +11019,7 @@ static void __nvoc_init_funcTable_Subdevice_1(Subdevice *pThis, RmHalspecOwner *
     pThis->__subdeviceCtrlCmdInternalMemmgrMemoryTransferWithGsp__ = &subdeviceCtrlCmdInternalMemmgrMemoryTransferWithGsp_46f6a7;
 
     // subdeviceCtrlCmdFbGetCarveoutRegionInfo -- exported (id=0x20801360)
-#if !NVOC_EXPORTED_METHOD_DISABLED_BY_FLAG(0x108u)
+#if !NVOC_EXPORTED_METHOD_DISABLED_BY_FLAG(0x148u)
     pThis->__subdeviceCtrlCmdFbGetCarveoutRegionInfo__ = &subdeviceCtrlCmdFbGetCarveoutRegionInfo_IMPL;
 #endif
 

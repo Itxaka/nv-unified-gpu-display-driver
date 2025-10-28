@@ -4930,6 +4930,7 @@ kbusIsDirectMappingAllowed_GM107
     }
 
     *bDirectSysMappingAllowed =
+         (memdescGetCustomHeap(pMemDesc) == MEMDESC_CUSTOM_HEAP_SCANOUT_CARVEOUT) ||
          (!(bAllowReflectedMapping) &&
          (!memdescGetFlag(pMemDesc, MEMDESC_FLAGS_ENCRYPTED))  &&
          (memdescGetGpuCacheAttrib(pMemDesc) != NV_MEMORY_CACHED) &&

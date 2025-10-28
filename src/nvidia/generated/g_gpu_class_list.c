@@ -40,6 +40,7 @@ gpuGetGenericClassList_IMPL(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV01_EVENT_KERNEL_CALLBACK,
         NV01_EVENT_KERNEL_CALLBACK_EX,
         NV01_EVENT_OS_EVENT,
+        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_LIST_SYSTEM,
         NV01_MEMORY_SYSTEM,
         NV01_MEMORY_SYSTEM_OS_DESCRIPTOR,
@@ -48,7 +49,7 @@ gpuGetGenericClassList_IMPL(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV01_ROOT_NON_PRIV,
         NV20_SUBDEVICE_0,
     };
-    *pNumClassDescriptors = 15;
+    *pNumClassDescriptors = 16;
     return genericClassDescriptorList;
 }
 
@@ -68,7 +69,6 @@ gpuGetNoEngClassList_TU102(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -89,7 +89,7 @@ gpuGetNoEngClassList_TU102(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 32;
+    *pNumClassDescriptors = 31;
     return halTU102ClassDescriptorList;
 }
 
@@ -170,7 +170,6 @@ gpuGetNoEngClassList_TU104(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -191,7 +190,7 @@ gpuGetNoEngClassList_TU104(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 32;
+    *pNumClassDescriptors = 31;
     return halTU104ClassDescriptorList;
 }
 
@@ -273,7 +272,6 @@ gpuGetNoEngClassList_TU106(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -294,7 +292,7 @@ gpuGetNoEngClassList_TU106(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 32;
+    *pNumClassDescriptors = 31;
     return halTU106ClassDescriptorList;
 }
 
@@ -377,7 +375,6 @@ gpuGetNoEngClassList_TU116(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -398,7 +395,7 @@ gpuGetNoEngClassList_TU116(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 32;
+    *pNumClassDescriptors = 31;
     return halTU116ClassDescriptorList;
 }
 
@@ -479,7 +476,6 @@ gpuGetNoEngClassList_TU117(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -500,7 +496,7 @@ gpuGetNoEngClassList_TU117(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 32;
+    *pNumClassDescriptors = 31;
     return halTU117ClassDescriptorList;
 }
 
@@ -585,7 +581,6 @@ gpuGetNoEngClassList_GA100(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -610,7 +605,7 @@ gpuGetNoEngClassList_GA100(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 40;
+    *pNumClassDescriptors = 39;
     return halGA100ClassDescriptorList;
 }
 
@@ -706,7 +701,6 @@ gpuGetNoEngClassList_GA102(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -731,7 +725,7 @@ gpuGetNoEngClassList_GA102(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 41;
+    *pNumClassDescriptors = 40;
     return halGA102ClassDescriptorList;
 }
 
@@ -824,7 +818,6 @@ gpuGetNoEngClassList_GA103(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -849,7 +842,7 @@ gpuGetNoEngClassList_GA103(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 41;
+    *pNumClassDescriptors = 40;
     return halGA103ClassDescriptorList;
 }
 
@@ -942,7 +935,6 @@ gpuGetNoEngClassList_GA104(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -967,7 +959,7 @@ gpuGetNoEngClassList_GA104(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 41;
+    *pNumClassDescriptors = 40;
     return halGA104ClassDescriptorList;
 }
 
@@ -1060,7 +1052,6 @@ gpuGetNoEngClassList_GA106(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -1085,7 +1076,7 @@ gpuGetNoEngClassList_GA106(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 41;
+    *pNumClassDescriptors = 40;
     return halGA106ClassDescriptorList;
 }
 
@@ -1178,7 +1169,6 @@ gpuGetNoEngClassList_GA107(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -1203,7 +1193,7 @@ gpuGetNoEngClassList_GA107(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 41;
+    *pNumClassDescriptors = 40;
     return halGA107ClassDescriptorList;
 }
 
@@ -1296,7 +1286,6 @@ gpuGetNoEngClassList_AD102(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -1321,7 +1310,7 @@ gpuGetNoEngClassList_AD102(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 41;
+    *pNumClassDescriptors = 40;
     return halAD102ClassDescriptorList;
 }
 
@@ -1422,7 +1411,6 @@ gpuGetNoEngClassList_AD103(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -1447,7 +1435,7 @@ gpuGetNoEngClassList_AD103(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 41;
+    *pNumClassDescriptors = 40;
     return halAD103ClassDescriptorList;
 }
 
@@ -1548,7 +1536,6 @@ gpuGetNoEngClassList_AD104(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -1573,7 +1560,7 @@ gpuGetNoEngClassList_AD104(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 41;
+    *pNumClassDescriptors = 40;
     return halAD104ClassDescriptorList;
 }
 
@@ -1674,7 +1661,6 @@ gpuGetNoEngClassList_AD106(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -1699,7 +1685,7 @@ gpuGetNoEngClassList_AD106(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 41;
+    *pNumClassDescriptors = 40;
     return halAD106ClassDescriptorList;
 }
 
@@ -1800,7 +1786,6 @@ gpuGetNoEngClassList_AD107(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -1825,7 +1810,7 @@ gpuGetNoEngClassList_AD107(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 41;
+    *pNumClassDescriptors = 40;
     return halAD107ClassDescriptorList;
 }
 
@@ -1927,7 +1912,6 @@ gpuGetNoEngClassList_GH100(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -1955,7 +1939,7 @@ gpuGetNoEngClassList_GH100(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 45;
+    *pNumClassDescriptors = 44;
     return halGH100ClassDescriptorList;
 }
 
@@ -2065,7 +2049,6 @@ gpuGetNoEngClassList_GB100(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -2093,7 +2076,7 @@ gpuGetNoEngClassList_GB100(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 45;
+    *pNumClassDescriptors = 44;
     return halGB100ClassDescriptorList;
 }
 
@@ -2215,7 +2198,6 @@ gpuGetNoEngClassList_GB102(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -2243,7 +2225,7 @@ gpuGetNoEngClassList_GB102(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 45;
+    *pNumClassDescriptors = 44;
     return halGB102ClassDescriptorList;
 }
 
@@ -2346,7 +2328,6 @@ gpuGetNoEngClassList_GB10B(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -2375,7 +2356,7 @@ gpuGetNoEngClassList_GB10B(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 46;
+    *pNumClassDescriptors = 45;
     return halGB10BClassDescriptorList;
 }
 
@@ -2474,7 +2455,6 @@ gpuGetNoEngClassList_GB110(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -2502,7 +2482,7 @@ gpuGetNoEngClassList_GB110(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 45;
+    *pNumClassDescriptors = 44;
     return halGB110ClassDescriptorList;
 }
 
@@ -2624,7 +2604,6 @@ gpuGetNoEngClassList_GB112(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -2652,7 +2631,7 @@ gpuGetNoEngClassList_GB112(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 45;
+    *pNumClassDescriptors = 44;
     return halGB112ClassDescriptorList;
 }
 
@@ -2755,7 +2734,6 @@ gpuGetNoEngClassList_GB202(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -2783,7 +2761,7 @@ gpuGetNoEngClassList_GB202(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 45;
+    *pNumClassDescriptors = 44;
     return halGB202ClassDescriptorList;
 }
 
@@ -2917,7 +2895,6 @@ gpuGetNoEngClassList_GB203(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -2945,7 +2922,7 @@ gpuGetNoEngClassList_GB203(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 45;
+    *pNumClassDescriptors = 44;
     return halGB203ClassDescriptorList;
 }
 
@@ -3074,7 +3051,6 @@ gpuGetNoEngClassList_GB205(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -3102,7 +3078,7 @@ gpuGetNoEngClassList_GB205(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 45;
+    *pNumClassDescriptors = 44;
     return halGB205ClassDescriptorList;
 }
 
@@ -3227,7 +3203,6 @@ gpuGetNoEngClassList_GB206(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -3255,7 +3230,7 @@ gpuGetNoEngClassList_GB206(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 45;
+    *pNumClassDescriptors = 44;
     return halGB206ClassDescriptorList;
 }
 
@@ -3380,7 +3355,6 @@ gpuGetNoEngClassList_GB207(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -3408,7 +3382,7 @@ gpuGetNoEngClassList_GB207(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 45;
+    *pNumClassDescriptors = 44;
     return halGB207ClassDescriptorList;
 }
 
@@ -3532,7 +3506,6 @@ gpuGetNoEngClassList_GB20B(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -3561,7 +3534,7 @@ gpuGetNoEngClassList_GB20B(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 46;
+    *pNumClassDescriptors = 45;
     return halGB20BClassDescriptorList;
 }
 
@@ -3697,7 +3670,6 @@ gpuGetNoEngClassList_GB20C(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV0020_GPU_MANAGEMENT,
         NV0092_RG_LINE_CALLBACK,
         NV01_MEMORY_DEVICELESS,
-        NV01_MEMORY_FRAMEBUFFER_CONSOLE,
         NV01_MEMORY_HW_RESOURCES,
         NV01_MEMORY_LIST_FBMEM,
         NV01_MEMORY_LIST_OBJECT,
@@ -3726,7 +3698,7 @@ gpuGetNoEngClassList_GB20C(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
         NV_SEMAPHORE_SURFACE,
         UVM_CHANNEL_RETAINER,
     };
-    *pNumClassDescriptors = 46;
+    *pNumClassDescriptors = 45;
     return halGB20CClassDescriptorList;
 }
 
@@ -3905,4 +3877,4 @@ gpuGetEngClassDescriptorList_T264D(OBJGPU *pGpu, NvU32 *pNumClassDescriptors)
     return halT264DClassDescriptorList;
 }
 
-ct_assert(NV0080_CTRL_GPU_CLASSLIST_MAX_SIZE >= (15 /* generic */ + 114 /* GB20B */));
+ct_assert(NV0080_CTRL_GPU_CLASSLIST_MAX_SIZE >= (16 /* generic */ + 113 /* GB20B */));

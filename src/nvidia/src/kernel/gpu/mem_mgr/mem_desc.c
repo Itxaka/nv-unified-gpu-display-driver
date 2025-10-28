@@ -1478,6 +1478,11 @@ _memdescFreeInternal
         return;
     }
 
+    if (pMemDesc->_flags & MEMDESC_FLAGS_ALLOC_FROM_SCANOUT_CARVEOUT)
+    {
+        return;
+    }
+
     pCb = memdescGetDestroyCallbackList(pMemDesc);
 
     // Notify all interested parties of destruction
@@ -4347,7 +4352,11 @@ memdescSetCustomHeap
     MEMDESC_CUSTOM_HEAP heap
 )
 {
-    NV_ASSERT(0);
+    if (heap == MEMDESC_CUSTOM_HEAP_ACR)
+        pMemDesc->_flags |= MEMDESC_FLAGS_CUSTOM_HEAP_ACR;
+
+    if (heap == MEMDESC_CUSTOM_HEAP_SCANOUT_CARVEOUT)
+        pMemDesc->_flags |= MEMDESC_FLAGS_ALLOC_FROM_SCANOUT_CARVEOUT;
 }
 
 /*!
@@ -4364,6 +4373,11 @@ memdescGetCustomHeap
     PMEMORY_DESCRIPTOR pMemDesc
 )
 {
+    if (!!(pMemDesc->_flags & MEMDESC_FLAGS_CUSTOM_HEAP_ACR))
+        return MEMDESC_CUSTOM_HEAP_ACR;
+
+    if (!!(pMemDesc->_flags & MEMDESC_FLAGS_ALLOC_FROM_SCANOUT_CARVEOUT))
+        return MEMDESC_CUSTOM_HEAP_SCANOUT_CARVEOUT;
 
     return MEMDESC_CUSTOM_HEAP_NONE;
 }

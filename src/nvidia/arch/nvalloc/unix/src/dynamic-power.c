@@ -106,6 +106,18 @@ static NvU32 dynamicPowerSupportGpuMask = 0;
 #define GC6_PRECONDITION_CHECK_TIME    ((NvU64)5 * 1000 * 1000 * 1000)
 
 //
+// iGPU needs a more aggressive timeout value of precondition
+// check to quickly engage the Rail-Gating state on an embedded
+// system.
+// Considering some basic scenarios like GPU monitoring which could
+// poll the GPU every 1 second, Rail-Gating cycle should not be triggered
+// in between the pollings. So the timeout value is set to 500 ms.
+// and the shortest duration to trigger Deferred-Idle would be
+// IGPU_RG_PRECONDITION_CHECK_TIME + IGPU_RG_BLOCKER_CHECK_AND_METHOD_FLUSH_TIME
+//
+#define IGPU_RG_PRECONDITION_CHECK_TIME    ((NvU64)500 * 1000 * 1000)
+
+//
 // Timeout needed for back to back GC6 cycles.
 // Timeout is kept same as the timeout selected for GC6 precondition check.
 // There are cases where GPU is in GC6 and then kernel wakes GPU out of GC6
@@ -126,6 +138,22 @@ static NvU32 dynamicPowerSupportGpuMask = 0;
 // idle upon consumption.
 //
 #define GC6_BAR1_BLOCKER_CHECK_AND_METHOD_FLUSH_TIME (200 * 1000 * 1000)
+
+//
+// The purpose of this timeout value is similar to
+// GC6_BAR1_BLOCKER_CHECK_AND_METHOD_FLUSH_TIME.
+// The difference between iGPU Rail-Gating and GC6 is that iGPU RG has a more
+// aggressive timeout value of precondition check to quickly engage the
+// Rail-Gating state on an embedded system. Meanwhile, the overall duration
+// of Deferred-Idle should be larger than 1 second considering some polling
+// scenarios which happens every 1 second.
+// The value here is extended to 700 ms so the overall Deferred-Idle duration.
+// could be keep within within the range:
+// - Lower Bound: IGPU_RG_PRECONDITION_CHECK_TIME + IGPU_RG_BLOCKER_CHECK_AND_METHOD_FLUSH_TIME
+// - Upper Bound: IGPU_RG_PRECONDITION_CHECK_TIME * 2 + IGPU_RG_BLOCKER_CHECK_AND_METHOD_FLUSH_TIME
+//
+#define IGPU_RG_BLOCKER_CHECK_AND_METHOD_FLUSH_TIME (700 * 1000 * 1000)
+
 
 //
 // Cap Maximum FB allocation size for GCOFF. If regkey value is greater
@@ -1875,8 +1903,20 @@ static void RmScheduleCallbackForIdlePreConditionsUnderGpuLock(
         portMemSet(&scheduleEventParams, 0, sizeof(scheduleEventParams));
 
         scheduleEventParams.pEvent = nvp->dynamic_power.idle_precondition_check_event;
-        scheduleEventParams.timeNs = GC6_PRECONDITION_CHECK_TIME;
         scheduleEventParams.bUseTimeAbs = NV_FALSE;
+        if (pGpu->getProperty(pGpu, PDB_PROP_GPU_RTD3_RG_SUPPORTED))
+        {
+            /*
+             * iGPU which supports Rail-Gating may want shorter idleness
+             * threhold to engage the deferred-idle transition.
+             * Set the threshold for precondition check to 500 ms.
+             */
+            scheduleEventParams.timeNs = IGPU_RG_PRECONDITION_CHECK_TIME;
+        }
+        else
+        {
+            scheduleEventParams.timeNs = GC6_PRECONDITION_CHECK_TIME;
+        }
 
         status = tmrCtrlCmdEventSchedule(pGpu, &scheduleEventParams);
 
@@ -1942,8 +1982,20 @@ static void RmScheduleCallbackToIndicateIdle(
         portMemSet(&scheduleEventParams, 0, sizeof(scheduleEventParams));
 
         scheduleEventParams.pEvent = nvp->dynamic_power.indicate_idle_event;
-        scheduleEventParams.timeNs = GC6_BAR1_BLOCKER_CHECK_AND_METHOD_FLUSH_TIME;
         scheduleEventParams.bUseTimeAbs = NV_FALSE;
+        if (pGpu->getProperty(pGpu, PDB_PROP_GPU_RTD3_RG_SUPPORTED))
+        {
+            /*
+             * iGPU which supports Rail-Gating may want shorter idleness
+             * threhold to engage the deferred-idle transition.
+             * Set the threshold for idle indicate to 700 ms.
+             */
+            scheduleEventParams.timeNs = IGPU_RG_BLOCKER_CHECK_AND_METHOD_FLUSH_TIME;
+        }
+        else
+        {
+            scheduleEventParams.timeNs = GC6_BAR1_BLOCKER_CHECK_AND_METHOD_FLUSH_TIME;
+        }
 
         status = tmrCtrlCmdEventSchedule(pGpu, &scheduleEventParams);
 

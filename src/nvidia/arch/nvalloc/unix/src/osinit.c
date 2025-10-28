@@ -845,6 +845,11 @@ osInitNvMapping(
     {
         nv->flags |= NV_FLAG_TRIGGER_FLR;
     }
+
+    if (pGpu->getProperty(pGpu, PDB_PROP_GPU_IS_SOC_SDM))
+    {
+        nv->flags |= NV_FLAG_HAS_CONSOLE_IN_SYSMEM_CARVEOUT;
+    }
 }
 
 void osInitScalabilityOptions
@@ -1003,7 +1008,7 @@ RmSetConsolePreservationParams(OBJGPU *pGpu)
     NvU64 fbBaseAddress = 0;
     NvU64 fbConsoleSize = 0;
     MemoryManager *pMemoryManager = GPU_GET_MEMORY_MANAGER(pGpu);
-
+    KernelBus *pKernelBus = GPU_GET_KERNEL_BUS(pGpu);
     //
     // PDB_PROP_GPU_PRIMARY_DEVICE should be NV_FALSE for vGPU configuration so
     // return early
@@ -1012,6 +1017,21 @@ RmSetConsolePreservationParams(OBJGPU *pGpu)
         return;
 
     if (!gpuFuseSupportsDisplay_HAL(pGpu))
+    {
+        return;
+    }
+
+    //
+    // If this is the zero FB SOC GPU with a console in system carveout, then
+    // the console memory is not mapped onto the BAR. The kernel can directly
+    // access the console memory, while the GPU accesses system carveout memory
+    // through the SMMU.
+    // The carveout is a reserved region of system memory that doesn’t get used
+    // in standard memory allocation.
+    //
+    // In this scenario, you don’t need to reserve console memory or BAR mapping.
+    //
+    if (NV_HAS_CONSOLE_IN_SYSMEM_CARVEOUT(nv))
     {
         return;
     }
@@ -1037,9 +1057,8 @@ RmSetConsolePreservationParams(OBJGPU *pGpu)
     //
     fbConsoleSize = rm_get_uefi_console_size(nv, &fbBaseAddress);
 
-    if ((fbConsoleSize > 0) && (fbBaseAddress != 0))
+    if ((fbConsoleSize > 0) && (fbBaseAddress != 0) && (pKernelBus != NULL))
     {
-        KernelBus *pKernelBus = GPU_GET_KERNEL_BUS(pGpu);
         pKernelBus->bPreserveBar1ConsoleEnabled =
                           (fbBaseAddress == nv->fb->cpu_address);
     }
@@ -1054,7 +1073,15 @@ RmSetConsolePreservationParams(OBJGPU *pGpu)
         fbConsoleSize = 0x40000;
     }
 
-    pMemoryManager->Ram.ReservedConsoleDispMemSize = NV_ALIGN_UP(fbConsoleSize, 0x10000);
+    if (pGpu->getProperty(pGpu, PDB_PROP_GPU_TEGRA_SOC_NVDISPLAY))
+    {
+        pMemoryManager->Ram.ReservedConsoleDispMemSize = fbConsoleSize;
+        pMemoryManager->Ram.ReservedConsoleDispMemBase = fbBaseAddress;
+    }
+    else
+    {
+        pMemoryManager->Ram.ReservedConsoleDispMemSize = NV_ALIGN_UP(fbConsoleSize, 0x10000);
+    }
 }
 
 static NV_STATUS
