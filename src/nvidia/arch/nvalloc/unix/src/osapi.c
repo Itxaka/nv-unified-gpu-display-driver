@@ -6079,7 +6079,8 @@ NV_STATUS NV_API_CALL rm_pmu_perfmon_get_load(
         return NV_ERR_INVALID_ARGUMENT;
     }
 
-    if (nvp->dynamic_power.state == NV_DYNAMIC_POWER_STATE_IDLE_INDICATED)
+    if (nvp->dynamic_power.state != NV_DYNAMIC_POWER_STATE_IN_USE &&
+        nvp->dynamic_power.state != NV_DYNAMIC_POWER_STATE_IDLE_INSTANT)
     {
         *load = 0;
         return NV_OK;
