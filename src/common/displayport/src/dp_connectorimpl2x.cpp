@@ -797,6 +797,13 @@ bool ConnectorImpl2x::notifyAttachBegin(Group *target, const DpModesetParams &mo
         }
     }
 
+    // Clean up: Clearing ECF
+    if (linkUseMultistream() || (activeLinkConfig.bIs128b132bChannelCoding))
+    {
+        targetImpl->hdcpSetEncrypted(false, NV0073_CTRL_SPECIFIC_HDCP_CTRL_HDCP22_TYPE_0,  NV_TRUE, NV_FALSE);
+        targetImpl->hdcpEnabled = false;
+    }
+
     if (linkUseMultistream())
     {
         unsigned symbolSize = GET_SYMBOL_SIZE(activeLinkConfig.bIs128b132bChannelCoding);
@@ -948,8 +955,35 @@ void ConnectorImpl2x::notifyAttachEnd(bool modesetCancelled)
         {
             currentModesetDeviceGroup->hdcpEnabled = isHDCPAuthOn = false;
         }
+        else if (!bHdcpAuthOnlyOnDemand)
+        {
+            currentModesetDeviceGroup->cancelHdcpCallbacks();
+
+            if (hdcpState.HDCP_State_Authenticated)
+            {
+                isHDCPAuthOn = true;
+                currentModesetDeviceGroup->hdcpSetEncrypted(true);
+            }
+            else
+            {
+                currentModesetDeviceGroup->hdcpEnabled = isHDCPAuthOn = false;
+            }
+        }
     }
 
+    //
+    // RM has the requirement of Head being ARMed to do authentication.
+    // Postpone the authentication until the NAE to do the authentication for DP1.2 as solution.
+    //
+    if (isDP12AuthCap && !isHopLimitExceeded && !isHDCPReAuthPending &&
+        !bHdcpAuthOnlyOnDemand)
+    {
+        isHDCPReAuthPending = true;
+        timer->queueCallback(this, &tagHDCPReauthentication, HDCP_AUTHENTICATION_COOLDOWN_HPD);
+    }
+
+    hdcpCapsRetries = 0U;
+    timer->queueCallback(this, &tagDelayedHdcpCapRead, 2000);
     fireEvents();
 }
 
@@ -1297,6 +1331,11 @@ void ConnectorImpl2x::notifyDetachBegin(Group *target)
             DP_PRINTF(DP_ERROR, "Failed to Disable the WAR for bug4949066!");
         }
     }
+    if(!linkUseMultistream() && activeLinkConfig.bIs128b132bChannelCoding)
+    {
+        group->hdcpSetEncrypted(false, NV0073_CTRL_SPECIFIC_HDCP_CTRL_HDCP22_TYPE_0, NV_TRUE, NV_FALSE);
+        group->hdcpEnabled = false;
+    }
     return ConnectorImpl::notifyDetachBegin(target);
 }
 
@@ -1389,6 +1428,20 @@ void ConnectorImpl2x::notifyDetachEnd(bool bKeepOdAlive)
         //
         else
         {
+            //
+            // - if EDP; disable ASSR after switching off the stream from head
+            //   to prevent corruption (bug 926360)
+            // - disable ASSR before power down link (bug 1641174)
+            //
+            if (main->isEDP())
+            {
+                bool bPanelPowerOn;
+                // if eDP's power has been shutdown here, don't disable ASSR, else it will be turned on by LT.
+                if (main->getEdpPowerData(&bPanelPowerOn, NULL) && bPanelPowerOn)
+                {
+                    main->disableAlternateScramblerReset();
+                }
+            }
             //
             // Power down the links as we have switched away from the monitor.
             // For shared SOR case, we need this to keep SW stats in DP instances in sync.

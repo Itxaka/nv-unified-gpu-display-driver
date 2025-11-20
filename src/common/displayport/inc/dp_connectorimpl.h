@@ -42,6 +42,7 @@
 #include "dp_discovery.h"
 #include "dp_groupimpl.h"
 #include "dp_deviceimpl.h"
+#include "dp_qse.h"
 #include "./dptestutil/dp_testmessage.h"
 
 // HDCP abort codes
@@ -71,6 +72,8 @@ static inline unsigned getDataClockMultiplier(NvU64 linkRate, NvU64 laneCount)
 
 namespace DisplayPort
 {
+
+    class QSENonceGenerator;
 
     typedef enum
     {
@@ -254,6 +257,15 @@ namespace DisplayPort
 
         Device          * lastDeviceSetForVbios;
 
+        QSENonceGenerator * qseNonceGenerator;
+
+        // Tells whether requests made by library to Downstream Device (i.e QSE messages sent to Branch Device) and RM
+        // (i.e KSV validation and Stream Validation requests sent by library to RM after getting QSE message reply from Downstream)
+        // during querying stream status is valid or not.
+        bool        bValidQSERequest;
+        ListElement       * message;             // Outstanding QSE message pointer for which Stream Validation submission failed.
+        NvU8              * clientId;            // ClientId of the group for which Stream Validation submission failed.
+
         // Flag which gets set when ACPI init is done. DD calls notifyAcpiInitDone to tell client that ACPI init is completed
         // & client can now initiate DDC EDID read for a device which supports EDID through SBIOS
         bool        bAcpiInitDone;
@@ -327,6 +339,9 @@ namespace DisplayPort
         // when DSC mode or bpc is changed but LT is still same
         //
         bool        bForceHeadShutdownOnModeTransition;
+
+        // Flag to tell whether to send QSE after stream encryption on
+        bool        bIsEncryptionQseValid;
 
         bool        bReportDeviceLostBeforeNew;
         bool        bDisableSSC;
@@ -535,6 +550,7 @@ namespace DisplayPort
         char tagHDCPReauthentication;
         char tagDelayedHdcpCapRead;
         char tagDelayedHDCPCPIrqHandling;
+        char tagSendQseMessage;
         char tagDpBwAllocationChanged;
         char tagHDCPStreamEncrEnable;
 
@@ -675,6 +691,7 @@ namespace DisplayPort
         virtual bool allocateTimeslice(GroupImpl * targetGroup);
         void freeTimeslice(GroupImpl * targetGroup);
         void flushTimeslotsToHardware();
+        void hdcpRenegotiate(NvU64 cN, NvU64 cKsv);
         bool getHDCPAbortCodesDP12(NvU32 &hdcpAbortCodesDP12);
         bool getOuiSink(unsigned &ouiId, unsigned char * modelName, size_t modelNameBufferSize, NvU8 &chipRevision);
         bool hdcpValidateKsv(const NvU8 *ksv, NvU32 Size);

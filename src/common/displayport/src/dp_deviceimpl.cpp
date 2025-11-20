@@ -1384,6 +1384,24 @@ TriState DeviceImpl::hdcpAvailable()
     {
         return this->hdcpAvailableHop();
     }
+    else
+    {
+        DeviceImpl *targetDevice = this;
+        while (targetDevice)
+        {
+            if (!targetDevice->hdcpAvailableHop())
+            {
+                return False;
+            }
+            else if (targetDevice->hdcpAvailableHop() == Indeterminate)
+            {
+                return Indeterminate;
+            }
+            targetDevice = targetDevice->parent;
+        }
+
+        return True;
+    }
     return False;
 }
 
@@ -3351,9 +3369,7 @@ DeviceHDCPDetection::start()
         }
         else
         {
-            parent->isHDCPCap = False;
-            waivePendingHDCPCapDoneNotification();
-            return;
+            goto NativeDPCDHDCPCAPRead;
         }
 
 NativeDPCDHDCPCAPRead:
@@ -3405,8 +3421,16 @@ NativeDPCDHDCPCAPRead:
     }
     else
     {
-        parent->isHDCPCap = False;
-        waivePendingHDCPCapDoneNotification();
+        parent->isHDCPCap = Indeterminate;
+        Address parentAddress = parent->address.parent();
+        //For DP1.4 atomic messaging, HDCP detection can be delayed, so lowering the priority.
+        remote22BCapsReadMessage.setMessagePriority(NV_DP_SBMSG_PRIORITY_LEVEL_DEFAULT);
+        remote22BCapsReadMessage.set(parentAddress, parent->address.tail(), NV_DPCD_HDCP22_BCAPS_OFFSET, HDCP22_BCAPS_SIZE);
+        bCapsReadCompleted = false;
+        bBCapsReadMessagePending = true;
+        messageManager->post(&remote22BCapsReadMessage, this);
+        if (parent->connector)
+            parent->connector->incPendingRemoteHdcpDetection();
     }
 }
 

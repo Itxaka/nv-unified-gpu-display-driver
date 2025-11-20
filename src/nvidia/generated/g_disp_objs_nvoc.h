@@ -16,7 +16,7 @@ extern "C" {
 #endif
 
 /*
- * SPDX-FileCopyrightText: Copyright (c) 1993-2024 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
+ * SPDX-FileCopyrightText: Copyright (c) 1993-2025 NVIDIA CORPORATION & AFFILIATES. All rights reserved.
  * SPDX-License-Identifier: MIT
  *
  * Permission is hereby granted, free of charge, to any person obtaining a
@@ -1629,7 +1629,7 @@ struct DispCommon {
     struct DisplayApi *__nvoc_pbase_DisplayApi;    // dispapi super
     struct DispCommon *__nvoc_pbase_DispCommon;    // dispcmn
 
-    // Vtable with 146 per-object function pointers
+    // Vtable with 156 per-object function pointers
     NV_STATUS (*__dispcmnCtrlCmdSystemGetVblankCounter__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_GET_VBLANK_COUNTER_PARAMS *);  // exported (id=0x730105)
     NV_STATUS (*__dispcmnCtrlCmdSystemGetVblankEnable__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_GET_VBLANK_ENABLE_PARAMS *);  // exported (id=0x730106)
     NV_STATUS (*__dispcmnCtrlCmdSystemCheckSidebandSrSupport__)(struct DispCommon * /*this*/, NV0073_CTRL_CMD_SYSTEM_CHECK_SIDEBAND_SR_SUPPORT_PARAMS *);  // exported (id=0x73014c)
@@ -1666,6 +1666,16 @@ struct DispCommon {
     NV_STATUS (*__dispcmnCtrlCmdSystemAcpiSubsystemActivated__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_ACPI_SUBSYSTEM_ACTIVATED_PARAMS *);  // exported (id=0x730117)
     NV_STATUS (*__dispcmnCtrlCmdSpecificSetAcpiIdMapping__)(struct DispCommon * /*this*/, NV0073_CTRL_SPECIFIC_SET_ACPI_ID_MAPPING_PARAMS *);  // exported (id=0x730284)
     NV_STATUS (*__dispcmnCtrlCmdSpecificGetAcpiDodDisplayPortAttachment__)(struct DispCommon * /*this*/, NV0073_CTRL_GET_ACPI_DOD_DISPLAY_PORT_ATTACHMENT_PARAMS *);  // exported (id=0x730285)
+    NV_STATUS (*__dispcmnCtrlCmdSpecificGetHdcpState__)(struct DispCommon * /*this*/, NV0073_CTRL_SPECIFIC_GET_HDCP_STATE_PARAMS *);  // exported (id=0x730280)
+    NV_STATUS (*__dispcmnCtrlCmdSpecificHdcpCtrl__)(struct DispCommon * /*this*/, NV0073_CTRL_SPECIFIC_HDCP_CTRL_PARAMS *);  // exported (id=0x730282)
+    NV_STATUS (*__dispcmnCtrlCmdSpecificGetHdcpRepeaterInfo__)(struct DispCommon * /*this*/, NV0073_CTRL_SPECIFIC_GET_HDCP_REPEATER_INFO_PARAMS *);  // exported (id=0x730260)
+    NV_STATUS (*__dispcmnCtrlCmdSpecificGetHdcpDiagnostics__)(struct DispCommon * /*this*/, NV0073_CTRL_SPECIFIC_GET_HDCP_DIAGNOSTICS_PARAMS *);  // exported (id=0x730281)
+    NV_STATUS (*__dispcmnCtrlCmdSpecificHdcpKsvListValidate__)(struct DispCommon * /*this*/, NV0073_CTRL_SPECIFIC_HDCP_KSVLIST_VALIDATE_PARAMS *);  // exported (id=0x73028d)
+    NV_STATUS (*__dispcmnCtrlCmdSpecificHdcpUpdate__)(struct DispCommon * /*this*/, NV0073_CTRL_SPECIFIC_HDCP_UPDATE_PARAMS *);  // exported (id=0x73028e)
+    NV_STATUS (*__dispcmnCtrlCmdSystemValidateSrm__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_VALIDATE_SRM_PARAMS *);  // exported (id=0x730118)
+    NV_STATUS (*__dispcmnCtrlCmdSystemGetSrmStatus__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_GET_SRM_STATUS_PARAMS *);  // exported (id=0x730119)
+    NV_STATUS (*__dispcmnCtrlCmdSystemHdcpRevocationCheck__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_HDCP_REVOCATE_PARAMS *);  // exported (id=0x73011b)
+    NV_STATUS (*__dispcmnCtrlCmdSystemUpdateSrm__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_UPDATE_SRM_PARAMS *);  // exported (id=0x73011c)
     NV_STATUS (*__dispcmnCtrlCmdSystemGetCapsV2__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_GET_CAPS_V2_PARAMS *);  // exported (id=0x730101)
     NV_STATUS (*__dispcmnCtrlCmdSystemGetNumHeads__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_GET_NUM_HEADS_PARAMS *);  // exported (id=0x730102)
     NV_STATUS (*__dispcmnCtrlCmdSystemGetScanline__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_GET_SCANLINE_PARAMS *);  // exported (id=0x730104)
@@ -1922,6 +1932,26 @@ NV_STATUS __nvoc_objCreate_DispCommon(DispCommon**, Dynamic*, NvU32, struct CALL
 #define dispcmnCtrlCmdSpecificSetAcpiIdMapping(pDispCommon, pParams) dispcmnCtrlCmdSpecificSetAcpiIdMapping_DISPATCH(pDispCommon, pParams)
 #define dispcmnCtrlCmdSpecificGetAcpiDodDisplayPortAttachment_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSpecificGetAcpiDodDisplayPortAttachment__
 #define dispcmnCtrlCmdSpecificGetAcpiDodDisplayPortAttachment(pDispCommon, pParams) dispcmnCtrlCmdSpecificGetAcpiDodDisplayPortAttachment_DISPATCH(pDispCommon, pParams)
+#define dispcmnCtrlCmdSpecificGetHdcpState_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSpecificGetHdcpState__
+#define dispcmnCtrlCmdSpecificGetHdcpState(pDispCommon, pParams) dispcmnCtrlCmdSpecificGetHdcpState_DISPATCH(pDispCommon, pParams)
+#define dispcmnCtrlCmdSpecificHdcpCtrl_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSpecificHdcpCtrl__
+#define dispcmnCtrlCmdSpecificHdcpCtrl(pDispCommon, pParams) dispcmnCtrlCmdSpecificHdcpCtrl_DISPATCH(pDispCommon, pParams)
+#define dispcmnCtrlCmdSpecificGetHdcpRepeaterInfo_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSpecificGetHdcpRepeaterInfo__
+#define dispcmnCtrlCmdSpecificGetHdcpRepeaterInfo(pDispCommon, pParams) dispcmnCtrlCmdSpecificGetHdcpRepeaterInfo_DISPATCH(pDispCommon, pParams)
+#define dispcmnCtrlCmdSpecificGetHdcpDiagnostics_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSpecificGetHdcpDiagnostics__
+#define dispcmnCtrlCmdSpecificGetHdcpDiagnostics(pDispCommon, pParams) dispcmnCtrlCmdSpecificGetHdcpDiagnostics_DISPATCH(pDispCommon, pParams)
+#define dispcmnCtrlCmdSpecificHdcpKsvListValidate_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSpecificHdcpKsvListValidate__
+#define dispcmnCtrlCmdSpecificHdcpKsvListValidate(pDispCommon, pKsvListValidateParams) dispcmnCtrlCmdSpecificHdcpKsvListValidate_DISPATCH(pDispCommon, pKsvListValidateParams)
+#define dispcmnCtrlCmdSpecificHdcpUpdate_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSpecificHdcpUpdate__
+#define dispcmnCtrlCmdSpecificHdcpUpdate(pDispCommon, pHdcpUpdateParams) dispcmnCtrlCmdSpecificHdcpUpdate_DISPATCH(pDispCommon, pHdcpUpdateParams)
+#define dispcmnCtrlCmdSystemValidateSrm_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSystemValidateSrm__
+#define dispcmnCtrlCmdSystemValidateSrm(pDispCommon, pParams) dispcmnCtrlCmdSystemValidateSrm_DISPATCH(pDispCommon, pParams)
+#define dispcmnCtrlCmdSystemGetSrmStatus_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSystemGetSrmStatus__
+#define dispcmnCtrlCmdSystemGetSrmStatus(pDispCommon, pParams) dispcmnCtrlCmdSystemGetSrmStatus_DISPATCH(pDispCommon, pParams)
+#define dispcmnCtrlCmdSystemHdcpRevocationCheck_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSystemHdcpRevocationCheck__
+#define dispcmnCtrlCmdSystemHdcpRevocationCheck(pDispCommon, pParams) dispcmnCtrlCmdSystemHdcpRevocationCheck_DISPATCH(pDispCommon, pParams)
+#define dispcmnCtrlCmdSystemUpdateSrm_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSystemUpdateSrm__
+#define dispcmnCtrlCmdSystemUpdateSrm(pDispCommon, pParams) dispcmnCtrlCmdSystemUpdateSrm_DISPATCH(pDispCommon, pParams)
 #define dispcmnCtrlCmdSystemGetCapsV2_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSystemGetCapsV2__
 #define dispcmnCtrlCmdSystemGetCapsV2(pDispCommon, pCapsParams) dispcmnCtrlCmdSystemGetCapsV2_DISPATCH(pDispCommon, pCapsParams)
 #define dispcmnCtrlCmdSystemGetNumHeads_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSystemGetNumHeads__
@@ -2338,6 +2368,46 @@ static inline NV_STATUS dispcmnCtrlCmdSpecificSetAcpiIdMapping_DISPATCH(struct D
 
 static inline NV_STATUS dispcmnCtrlCmdSpecificGetAcpiDodDisplayPortAttachment_DISPATCH(struct DispCommon *pDispCommon, NV0073_CTRL_GET_ACPI_DOD_DISPLAY_PORT_ATTACHMENT_PARAMS *pParams) {
     return pDispCommon->__dispcmnCtrlCmdSpecificGetAcpiDodDisplayPortAttachment__(pDispCommon, pParams);
+}
+
+static inline NV_STATUS dispcmnCtrlCmdSpecificGetHdcpState_DISPATCH(struct DispCommon *pDispCommon, NV0073_CTRL_SPECIFIC_GET_HDCP_STATE_PARAMS *pParams) {
+    return pDispCommon->__dispcmnCtrlCmdSpecificGetHdcpState__(pDispCommon, pParams);
+}
+
+static inline NV_STATUS dispcmnCtrlCmdSpecificHdcpCtrl_DISPATCH(struct DispCommon *pDispCommon, NV0073_CTRL_SPECIFIC_HDCP_CTRL_PARAMS *pParams) {
+    return pDispCommon->__dispcmnCtrlCmdSpecificHdcpCtrl__(pDispCommon, pParams);
+}
+
+static inline NV_STATUS dispcmnCtrlCmdSpecificGetHdcpRepeaterInfo_DISPATCH(struct DispCommon *pDispCommon, NV0073_CTRL_SPECIFIC_GET_HDCP_REPEATER_INFO_PARAMS *pParams) {
+    return pDispCommon->__dispcmnCtrlCmdSpecificGetHdcpRepeaterInfo__(pDispCommon, pParams);
+}
+
+static inline NV_STATUS dispcmnCtrlCmdSpecificGetHdcpDiagnostics_DISPATCH(struct DispCommon *pDispCommon, NV0073_CTRL_SPECIFIC_GET_HDCP_DIAGNOSTICS_PARAMS *pParams) {
+    return pDispCommon->__dispcmnCtrlCmdSpecificGetHdcpDiagnostics__(pDispCommon, pParams);
+}
+
+static inline NV_STATUS dispcmnCtrlCmdSpecificHdcpKsvListValidate_DISPATCH(struct DispCommon *pDispCommon, NV0073_CTRL_SPECIFIC_HDCP_KSVLIST_VALIDATE_PARAMS *pKsvListValidateParams) {
+    return pDispCommon->__dispcmnCtrlCmdSpecificHdcpKsvListValidate__(pDispCommon, pKsvListValidateParams);
+}
+
+static inline NV_STATUS dispcmnCtrlCmdSpecificHdcpUpdate_DISPATCH(struct DispCommon *pDispCommon, NV0073_CTRL_SPECIFIC_HDCP_UPDATE_PARAMS *pHdcpUpdateParams) {
+    return pDispCommon->__dispcmnCtrlCmdSpecificHdcpUpdate__(pDispCommon, pHdcpUpdateParams);
+}
+
+static inline NV_STATUS dispcmnCtrlCmdSystemValidateSrm_DISPATCH(struct DispCommon *pDispCommon, NV0073_CTRL_SYSTEM_VALIDATE_SRM_PARAMS *pParams) {
+    return pDispCommon->__dispcmnCtrlCmdSystemValidateSrm__(pDispCommon, pParams);
+}
+
+static inline NV_STATUS dispcmnCtrlCmdSystemGetSrmStatus_DISPATCH(struct DispCommon *pDispCommon, NV0073_CTRL_SYSTEM_GET_SRM_STATUS_PARAMS *pParams) {
+    return pDispCommon->__dispcmnCtrlCmdSystemGetSrmStatus__(pDispCommon, pParams);
+}
+
+static inline NV_STATUS dispcmnCtrlCmdSystemHdcpRevocationCheck_DISPATCH(struct DispCommon *pDispCommon, NV0073_CTRL_SYSTEM_HDCP_REVOCATE_PARAMS *pParams) {
+    return pDispCommon->__dispcmnCtrlCmdSystemHdcpRevocationCheck__(pDispCommon, pParams);
+}
+
+static inline NV_STATUS dispcmnCtrlCmdSystemUpdateSrm_DISPATCH(struct DispCommon *pDispCommon, NV0073_CTRL_SYSTEM_UPDATE_SRM_PARAMS *pParams) {
+    return pDispCommon->__dispcmnCtrlCmdSystemUpdateSrm__(pDispCommon, pParams);
 }
 
 static inline NV_STATUS dispcmnCtrlCmdSystemGetCapsV2_DISPATCH(struct DispCommon *pDispCommon, NV0073_CTRL_SYSTEM_GET_CAPS_V2_PARAMS *pCapsParams) {
@@ -2955,6 +3025,26 @@ NV_STATUS dispcmnCtrlCmdSystemAcpiSubsystemActivated_IMPL(struct DispCommon *pDi
 NV_STATUS dispcmnCtrlCmdSpecificSetAcpiIdMapping_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_SPECIFIC_SET_ACPI_ID_MAPPING_PARAMS *pParams);
 
 NV_STATUS dispcmnCtrlCmdSpecificGetAcpiDodDisplayPortAttachment_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_GET_ACPI_DOD_DISPLAY_PORT_ATTACHMENT_PARAMS *pParams);
+
+NV_STATUS dispcmnCtrlCmdSpecificGetHdcpState_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_SPECIFIC_GET_HDCP_STATE_PARAMS *pParams);
+
+NV_STATUS dispcmnCtrlCmdSpecificHdcpCtrl_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_SPECIFIC_HDCP_CTRL_PARAMS *pParams);
+
+NV_STATUS dispcmnCtrlCmdSpecificGetHdcpRepeaterInfo_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_SPECIFIC_GET_HDCP_REPEATER_INFO_PARAMS *pParams);
+
+NV_STATUS dispcmnCtrlCmdSpecificGetHdcpDiagnostics_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_SPECIFIC_GET_HDCP_DIAGNOSTICS_PARAMS *pParams);
+
+NV_STATUS dispcmnCtrlCmdSpecificHdcpKsvListValidate_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_SPECIFIC_HDCP_KSVLIST_VALIDATE_PARAMS *pKsvListValidateParams);
+
+NV_STATUS dispcmnCtrlCmdSpecificHdcpUpdate_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_SPECIFIC_HDCP_UPDATE_PARAMS *pHdcpUpdateParams);
+
+NV_STATUS dispcmnCtrlCmdSystemValidateSrm_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_SYSTEM_VALIDATE_SRM_PARAMS *pParams);
+
+NV_STATUS dispcmnCtrlCmdSystemGetSrmStatus_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_SYSTEM_GET_SRM_STATUS_PARAMS *pParams);
+
+NV_STATUS dispcmnCtrlCmdSystemHdcpRevocationCheck_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_SYSTEM_HDCP_REVOCATE_PARAMS *pParams);
+
+NV_STATUS dispcmnCtrlCmdSystemUpdateSrm_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_SYSTEM_UPDATE_SRM_PARAMS *pParams);
 
 NV_STATUS dispcmnCtrlCmdSystemGetCapsV2_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_SYSTEM_GET_CAPS_V2_PARAMS *pCapsParams);
 
