@@ -434,6 +434,16 @@ static void __nvoc_init_funcTable_KernelDisplay_1(KernelDisplay *pThis, RmHalspe
         pThis->__kdispArbAndAllocDisplayBandwidth__ = &kdispArbAndAllocDisplayBandwidth_46f6a7;
     }
 
+    // kdispGetUefiDisplayBandwidth -- halified (2 hals) body
+    if (( ((chipHal_HalVarIdx >> 5) == 3UL) && ((1UL << (chipHal_HalVarIdx & 0x1f)) & 0x00005000UL) )) /* ChipHal: T234D | T264D */ 
+    {
+        pThis->__kdispGetUefiDisplayBandwidth__ = &kdispGetUefiDisplayBandwidth_v04_02;
+    }
+    else
+    {
+        pThis->__kdispGetUefiDisplayBandwidth__ = &kdispGetUefiDisplayBandwidth_46f6a7;
+    }
+
     // kdispGetVgaWorkspaceBase -- halified (3 hals) body
     if (( ((chipHal_HalVarIdx >> 5) == 1UL) && ((1UL << (chipHal_HalVarIdx & 0x1f)) & 0x70000400UL) ) ||
         ( ((chipHal_HalVarIdx >> 5) == 2UL) && ((1UL << (chipHal_HalVarIdx & 0x1f)) & 0x00000006UL) )) /* ChipHal: GA100 | GH100 | GB100 | GB102 | GB110 | GB112 */ 
@@ -724,13 +734,13 @@ static void __nvoc_init_funcTable_KernelDisplay_1(KernelDisplay *pThis, RmHalspe
     {
         pThis->__kdispIsChannelAllocatedHw__ = &kdispIsChannelAllocatedHw_3dd2c9;
     }
-} // End __nvoc_init_funcTable_KernelDisplay_1 with approximately 63 basic block(s).
+} // End __nvoc_init_funcTable_KernelDisplay_1 with approximately 65 basic block(s).
 
 
-// Initialize vtable(s) for 48 virtual method(s).
+// Initialize vtable(s) for 49 virtual method(s).
 void __nvoc_init_funcTable_KernelDisplay(KernelDisplay *pThis, RmHalspecOwner *pRmhalspecowner, GpuHalspecOwner *pGpuhalspecowner) {
 
-    // Initialize vtable(s) with 30 per-object function pointer(s).
+    // Initialize vtable(s) with 31 per-object function pointer(s).
     __nvoc_init_funcTable_KernelDisplay_1(pThis, pRmhalspecowner, pGpuhalspecowner);
 }
 

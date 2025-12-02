@@ -1629,7 +1629,7 @@ struct DispCommon {
     struct DisplayApi *__nvoc_pbase_DisplayApi;    // dispapi super
     struct DispCommon *__nvoc_pbase_DispCommon;    // dispcmn
 
-    // Vtable with 156 per-object function pointers
+    // Vtable with 157 per-object function pointers
     NV_STATUS (*__dispcmnCtrlCmdSystemGetVblankCounter__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_GET_VBLANK_COUNTER_PARAMS *);  // exported (id=0x730105)
     NV_STATUS (*__dispcmnCtrlCmdSystemGetVblankEnable__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_GET_VBLANK_ENABLE_PARAMS *);  // exported (id=0x730106)
     NV_STATUS (*__dispcmnCtrlCmdSystemCheckSidebandSrSupport__)(struct DispCommon * /*this*/, NV0073_CTRL_CMD_SYSTEM_CHECK_SIDEBAND_SR_SUPPORT_PARAMS *);  // exported (id=0x73014c)
@@ -1689,6 +1689,7 @@ struct DispCommon {
     NV_STATUS (*__dispcmnCtrlCmdSystemQueryDisplayIdsWithMux__)(struct DispCommon * /*this*/, NV0073_CTRL_CMD_SYSTEM_QUERY_DISPLAY_IDS_WITH_MUX_PARAMS *);  // exported (id=0x73013d)
     NV_STATUS (*__dispcmnCtrlCmdSystemCheckSidebandI2cSupport__)(struct DispCommon * /*this*/, NV0073_CTRL_CMD_SYSTEM_CHECK_SIDEBAND_I2C_SUPPORT_PARAMS *);  // exported (id=0x73014b)
     NV_STATUS (*__dispcmnCtrlCmdSystemAllocateDisplayBandwidth__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_ALLOCATE_DISPLAY_BANDWIDTH_PARAMS *);  // exported (id=0x730143)
+    NV_STATUS (*__dispcmnCtrlCmdSystemQueryUefiDisplayBandwidth__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_QUERY_UEFI_DISPLAY_BANDWIDTH_PARAMS *);  // exported (id=0x730161)
     NV_STATUS (*__dispcmnCtrlCmdSystemInternalAllocateDisplayBandwidth__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_INTERNAL_ALLOCATE_DISPLAY_BANDWIDTH_PARAMS *);  // exported (id=0x730157)
     NV_STATUS (*__dispcmnCtrlCmdSystemGetHotplugConfig__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_GET_SET_HOTPLUG_CONFIG_PARAMS *);  // exported (id=0x730109)
     NV_STATUS (*__dispcmnCtrlCmdSystemGetHotplugEventConfig__)(struct DispCommon * /*this*/, NV0073_CTRL_SYSTEM_HOTPLUG_EVENT_CONFIG_PARAMS *);  // exported (id=0x730144)
@@ -1978,6 +1979,8 @@ NV_STATUS __nvoc_objCreate_DispCommon(DispCommon**, Dynamic*, NvU32, struct CALL
 #define dispcmnCtrlCmdSystemCheckSidebandI2cSupport(pDispCommon, pParams) dispcmnCtrlCmdSystemCheckSidebandI2cSupport_DISPATCH(pDispCommon, pParams)
 #define dispcmnCtrlCmdSystemAllocateDisplayBandwidth_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSystemAllocateDisplayBandwidth__
 #define dispcmnCtrlCmdSystemAllocateDisplayBandwidth(pDispCommon, pParams) dispcmnCtrlCmdSystemAllocateDisplayBandwidth_DISPATCH(pDispCommon, pParams)
+#define dispcmnCtrlCmdSystemQueryUefiDisplayBandwidth_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSystemQueryUefiDisplayBandwidth__
+#define dispcmnCtrlCmdSystemQueryUefiDisplayBandwidth(pDispCommon, pParams) dispcmnCtrlCmdSystemQueryUefiDisplayBandwidth_DISPATCH(pDispCommon, pParams)
 #define dispcmnCtrlCmdSystemInternalAllocateDisplayBandwidth_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSystemInternalAllocateDisplayBandwidth__
 #define dispcmnCtrlCmdSystemInternalAllocateDisplayBandwidth(pDispCommon, pParams) dispcmnCtrlCmdSystemInternalAllocateDisplayBandwidth_DISPATCH(pDispCommon, pParams)
 #define dispcmnCtrlCmdSystemGetHotplugConfig_FNPTR(pDispCommon) pDispCommon->__dispcmnCtrlCmdSystemGetHotplugConfig__
@@ -2460,6 +2463,10 @@ static inline NV_STATUS dispcmnCtrlCmdSystemCheckSidebandI2cSupport_DISPATCH(str
 
 static inline NV_STATUS dispcmnCtrlCmdSystemAllocateDisplayBandwidth_DISPATCH(struct DispCommon *pDispCommon, NV0073_CTRL_SYSTEM_ALLOCATE_DISPLAY_BANDWIDTH_PARAMS *pParams) {
     return pDispCommon->__dispcmnCtrlCmdSystemAllocateDisplayBandwidth__(pDispCommon, pParams);
+}
+
+static inline NV_STATUS dispcmnCtrlCmdSystemQueryUefiDisplayBandwidth_DISPATCH(struct DispCommon *pDispCommon, NV0073_CTRL_SYSTEM_QUERY_UEFI_DISPLAY_BANDWIDTH_PARAMS *pParams) {
+    return pDispCommon->__dispcmnCtrlCmdSystemQueryUefiDisplayBandwidth__(pDispCommon, pParams);
 }
 
 static inline NV_STATUS dispcmnCtrlCmdSystemInternalAllocateDisplayBandwidth_DISPATCH(struct DispCommon *pDispCommon, NV0073_CTRL_SYSTEM_INTERNAL_ALLOCATE_DISPLAY_BANDWIDTH_PARAMS *pParams) {
@@ -3071,6 +3078,8 @@ NV_STATUS dispcmnCtrlCmdSystemQueryDisplayIdsWithMux_IMPL(struct DispCommon *pDi
 NV_STATUS dispcmnCtrlCmdSystemCheckSidebandI2cSupport_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_CMD_SYSTEM_CHECK_SIDEBAND_I2C_SUPPORT_PARAMS *pParams);
 
 NV_STATUS dispcmnCtrlCmdSystemAllocateDisplayBandwidth_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_SYSTEM_ALLOCATE_DISPLAY_BANDWIDTH_PARAMS *pParams);
+
+NV_STATUS dispcmnCtrlCmdSystemQueryUefiDisplayBandwidth_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_SYSTEM_QUERY_UEFI_DISPLAY_BANDWIDTH_PARAMS *pParams);
 
 NV_STATUS dispcmnCtrlCmdSystemInternalAllocateDisplayBandwidth_IMPL(struct DispCommon *pDispCommon, NV0073_CTRL_SYSTEM_INTERNAL_ALLOCATE_DISPLAY_BANDWIDTH_PARAMS *pParams);
 

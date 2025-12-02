@@ -209,7 +209,7 @@ struct KernelDisplay {
     struct IntrService *__nvoc_pbase_IntrService;    // intrserv super
     struct KernelDisplay *__nvoc_pbase_KernelDisplay;    // kdisp
 
-    // Vtable with 30 per-object function pointers
+    // Vtable with 31 per-object function pointers
     NV_STATUS (*__kdispSelectClass__)(OBJGPU *, struct KernelDisplay * /*this*/, NvU32);  // halified (2 hals) body
     NvS32 (*__kdispGetBaseOffset__)(OBJGPU *, struct KernelDisplay * /*this*/);  // halified (2 hals) body
     NV_STATUS (*__kdispGetChannelNum__)(struct KernelDisplay * /*this*/, DISPCHNCLASS, NvU32, NvU32 *);  // halified (2 hals) body
@@ -218,6 +218,7 @@ struct KernelDisplay {
     NV_STATUS (*__kdispGetDisplayChannelUserBaseAndSize__)(OBJGPU *, struct KernelDisplay * /*this*/, DISPCHNCLASS, NvU32, NvU32 *, NvU32 *);  // halified (2 hals) body
     NV_STATUS (*__kdispImportImpData__)(struct KernelDisplay * /*this*/);  // halified (2 hals) body
     NV_STATUS (*__kdispArbAndAllocDisplayBandwidth__)(OBJGPU *, struct KernelDisplay * /*this*/, enum DISPLAY_ICC_BW_CLIENT, NvU32, NvU32);  // halified (2 hals) body
+    NV_STATUS (*__kdispGetUefiDisplayBandwidth__)(OBJGPU *, struct KernelDisplay * /*this*/, NvU32 *, NvU32 *);  // halified (2 hals) body
     NvBool (*__kdispGetVgaWorkspaceBase__)(OBJGPU *, struct KernelDisplay * /*this*/, NvU64 *);  // halified (3 hals) body
     void (*__kdispInvokeDisplayModesetCallback__)(struct KernelDisplay * /*this*/, NvBool, NvU32, NvU32);  // halified (2 hals) body
     NV_STATUS (*__kdispReadRgLineCountAndFrameCount__)(OBJGPU *, struct KernelDisplay * /*this*/, NvU32, NvU32 *, NvU32 *);  // halified (2 hals) body
@@ -396,6 +397,9 @@ NV_STATUS __nvoc_objCreate_KernelDisplay(KernelDisplay**, Dynamic*, NvU32);
 #define kdispArbAndAllocDisplayBandwidth_FNPTR(pKernelDisplay) pKernelDisplay->__kdispArbAndAllocDisplayBandwidth__
 #define kdispArbAndAllocDisplayBandwidth(pGpu, pKernelDisplay, iccBwClient, minRequiredIsoBandwidthKBPS, minRequiredFloorBandwidthKBPS) kdispArbAndAllocDisplayBandwidth_DISPATCH(pGpu, pKernelDisplay, iccBwClient, minRequiredIsoBandwidthKBPS, minRequiredFloorBandwidthKBPS)
 #define kdispArbAndAllocDisplayBandwidth_HAL(pGpu, pKernelDisplay, iccBwClient, minRequiredIsoBandwidthKBPS, minRequiredFloorBandwidthKBPS) kdispArbAndAllocDisplayBandwidth_DISPATCH(pGpu, pKernelDisplay, iccBwClient, minRequiredIsoBandwidthKBPS, minRequiredFloorBandwidthKBPS)
+#define kdispGetUefiDisplayBandwidth_FNPTR(pKernelDisplay) pKernelDisplay->__kdispGetUefiDisplayBandwidth__
+#define kdispGetUefiDisplayBandwidth(pGpu, pKernelDisplay, uefiIsoBandwidthKBPS, uefiFloorBandwidthKBPS) kdispGetUefiDisplayBandwidth_DISPATCH(pGpu, pKernelDisplay, uefiIsoBandwidthKBPS, uefiFloorBandwidthKBPS)
+#define kdispGetUefiDisplayBandwidth_HAL(pGpu, pKernelDisplay, uefiIsoBandwidthKBPS, uefiFloorBandwidthKBPS) kdispGetUefiDisplayBandwidth_DISPATCH(pGpu, pKernelDisplay, uefiIsoBandwidthKBPS, uefiFloorBandwidthKBPS)
 #define kdispGetVgaWorkspaceBase_FNPTR(pKernelDisplay) pKernelDisplay->__kdispGetVgaWorkspaceBase__
 #define kdispGetVgaWorkspaceBase(pGpu, pKernelDisplay, pOffset) kdispGetVgaWorkspaceBase_DISPATCH(pGpu, pKernelDisplay, pOffset)
 #define kdispGetVgaWorkspaceBase_HAL(pGpu, pKernelDisplay, pOffset) kdispGetVgaWorkspaceBase_DISPATCH(pGpu, pKernelDisplay, pOffset)
@@ -546,6 +550,10 @@ static inline NV_STATUS kdispImportImpData_DISPATCH(struct KernelDisplay *pKerne
 
 static inline NV_STATUS kdispArbAndAllocDisplayBandwidth_DISPATCH(OBJGPU *pGpu, struct KernelDisplay *pKernelDisplay, enum DISPLAY_ICC_BW_CLIENT iccBwClient, NvU32 minRequiredIsoBandwidthKBPS, NvU32 minRequiredFloorBandwidthKBPS) {
     return pKernelDisplay->__kdispArbAndAllocDisplayBandwidth__(pGpu, pKernelDisplay, iccBwClient, minRequiredIsoBandwidthKBPS, minRequiredFloorBandwidthKBPS);
+}
+
+static inline NV_STATUS kdispGetUefiDisplayBandwidth_DISPATCH(OBJGPU *pGpu, struct KernelDisplay *pKernelDisplay, NvU32 *uefiIsoBandwidthKBPS, NvU32 *uefiFloorBandwidthKBPS) {
+    return pKernelDisplay->__kdispGetUefiDisplayBandwidth__(pGpu, pKernelDisplay, uefiIsoBandwidthKBPS, uefiFloorBandwidthKBPS);
 }
 
 static inline NvBool kdispGetVgaWorkspaceBase_DISPATCH(OBJGPU *pGpu, struct KernelDisplay *pKernelDisplay, NvU64 *pOffset) {
@@ -991,6 +999,12 @@ static inline NV_STATUS kdispImportImpData_56cd7a(struct KernelDisplay *pKernelD
 NV_STATUS kdispArbAndAllocDisplayBandwidth_v04_02(OBJGPU *pGpu, struct KernelDisplay *pKernelDisplay, enum DISPLAY_ICC_BW_CLIENT iccBwClient, NvU32 minRequiredIsoBandwidthKBPS, NvU32 minRequiredFloorBandwidthKBPS);
 
 static inline NV_STATUS kdispArbAndAllocDisplayBandwidth_46f6a7(OBJGPU *pGpu, struct KernelDisplay *pKernelDisplay, enum DISPLAY_ICC_BW_CLIENT iccBwClient, NvU32 minRequiredIsoBandwidthKBPS, NvU32 minRequiredFloorBandwidthKBPS) {
+    return NV_ERR_NOT_SUPPORTED;
+}
+
+NV_STATUS kdispGetUefiDisplayBandwidth_v04_02(OBJGPU *pGpu, struct KernelDisplay *pKernelDisplay, NvU32 *uefiIsoBandwidthKBPS, NvU32 *uefiFloorBandwidthKBPS);
+
+static inline NV_STATUS kdispGetUefiDisplayBandwidth_46f6a7(OBJGPU *pGpu, struct KernelDisplay *pKernelDisplay, NvU32 *uefiIsoBandwidthKBPS, NvU32 *uefiFloorBandwidthKBPS) {
     return NV_ERR_NOT_SUPPORTED;
 }
 

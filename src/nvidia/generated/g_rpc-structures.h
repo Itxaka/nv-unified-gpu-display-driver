@@ -1615,6 +1615,9 @@ typedef rpc_vgpu_config_event_v17_00 rpc_vgpu_config_event_v;
 typedef struct rpc_dce_rm_init_v01_00
 {
     NvBool     bInit;
+    NvU32      maxDispClkRateDisppll;
+    NvU32      maxDispClkRateSppllClkouta;
+    NvU32      maxHubClkRateSppllClkoutb;
     NvU32      hInternalClient;
 } rpc_dce_rm_init_v01_00;
 
@@ -8937,6 +8940,27 @@ static vmiopd_fdesc_t vmiopd_fdesc_t_rpc_dce_rm_init_v01_00[] = {
         .offset               = NV_OFFSETOF(rpc_dce_rm_init_v01_00, bInit),
         #if (defined(DEBUG) || defined(DEVELOP))
         .name                 = "bInit"
+        #endif
+    },
+    {
+        .vtype                = vtype_NvU32,
+        .offset               = NV_OFFSETOF(rpc_dce_rm_init_v01_00, maxDispClkRateDisppll),
+        #if (defined(DEBUG) || defined(DEVELOP))
+        .name                 = "maxDispClkRateDisppll"
+        #endif
+    },
+    {
+        .vtype                = vtype_NvU32,
+        .offset               = NV_OFFSETOF(rpc_dce_rm_init_v01_00, maxDispClkRateSppllClkouta),
+        #if (defined(DEBUG) || defined(DEVELOP))
+        .name                 = "maxDispClkRateSppllClkouta"
+        #endif
+    },
+    {
+        .vtype                = vtype_NvU32,
+        .offset               = NV_OFFSETOF(rpc_dce_rm_init_v01_00, maxHubClkRateSppllClkoutb),
+        #if (defined(DEBUG) || defined(DEVELOP))
+        .name                 = "maxHubClkRateSppllClkoutb"
         #endif
     },
     {

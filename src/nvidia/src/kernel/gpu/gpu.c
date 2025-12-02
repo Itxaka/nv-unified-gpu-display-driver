@@ -2535,8 +2535,19 @@ gpuStateLoad_IMPL
         RMTRACE_ENGINE_PROFILE_EVENT("gpuStateLoadEngEnd", curEngDescriptor, pGpu->registerAccess.regReadCount, pGpu->registerAccess.regWriteCount);
     }
 
-    // Video logging is not a required feature, don't override existing status
-    NV_CHECK(LEVEL_ERROR, gpuInitVideoLogging(pGpu) == NV_OK);
+    //
+    // Skip the gpuInitVideoLogging() and gpuFreeVideoLogging() sequences when GPU_STATE_FLAGS_PRESERVING is set
+    // for iGPUs. It appears that dGPU intentionally performs alloc/free of the VideoLogging buffer during the
+    // GC6 sequence due to Bug 4252219.
+    // For dGPU, the VideoLogging buffer resides in VIDMEM and is accessed via BAR2 mapping, which requires the
+    // special handling described in Bug 4252219.
+    // In contrast, for iGPUs, the VideoLogging buffer is located in SYSMEM, so this special handling is not needed.
+    //
+    if (!((pGpu->getProperty(pGpu, PDB_PROP_GPU_ZERO_FB)) && (flags & GPU_STATE_FLAGS_PRESERVING)))
+    {
+        // Video logging is not a required feature, don't override existing status
+        NV_CHECK(LEVEL_ERROR, gpuInitVideoLogging(pGpu) == NV_OK);
+    }
 
     rmStatus = gpuInitVmmuInfo(pGpu);
     if (rmStatus != NV_OK)
@@ -3167,7 +3178,18 @@ gpuStateUnload_IMPL
     if (rmStatus != NV_OK)
         return rmStatus;
 
-    gpuFreeVideoLogging(pGpu);
+    //
+    // Skip the gpuInitVideoLogging() and gpuFreeVideoLogging() sequences when GPU_STATE_FLAGS_PRESERVING is set
+    // for iGPUs. It appears that dGPU intentionally performs alloc/free of the VideoLogging buffer during the
+    // GC6 sequence due to Bug 4252219.
+    // For dGPU, the VideoLogging buffer resides in VIDMEM and is accessed via BAR2 mapping, which requires the
+    // special handling described in Bug 4252219.
+    // In contrast, for iGPUs, the VideoLogging buffer is located in SYSMEM, so this special handling is not needed.
+    //
+    if (!((pGpu->getProperty(pGpu, PDB_PROP_GPU_ZERO_FB)) && (flags & GPU_STATE_FLAGS_PRESERVING)))
+    {
+        gpuFreeVideoLogging(pGpu);
+    }
 
     ENGDESCRIPTOR *pEngDescriptorList = gpuGetUnloadEngineDescriptors(pGpu);
     NvU32          numEngDescriptors  = gpuGetNumEngDescriptors(pGpu);
