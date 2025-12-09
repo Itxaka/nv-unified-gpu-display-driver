@@ -21,29 +21,9 @@
  * DEALINGS IN THE SOFTWARE.
  */
 
-#include "gpu/gpu_arch.h"
-#include "published/blackwell/gb10b/dev_fuse.h"
-#include "published/blackwell/gb10b/hwproject.h"
+#ifndef __gb10b_dev_fuse_h__
+#define __gb10b_dev_fuse_h__
 
-NvU32 gpuarchGetSystemPhysAddrWidth_GB10B(GpuArch *pGpuArch)
-{
-    return NV_CHIP_EXTENDED_SYSTEM_PHYSICAL_ADDRESS_BITS;
-}
+#define NV_FUSE_STATUS_OPT_GPC                                                 0x00820c1c /* R--4R */
 
-NvU32 gpuarchGetDmaAddrWidth_GB10B(GpuArch *pGpuArch)
-{
-    //
-    // This is to make sure that the Instance Block allocations happen within
-    // the 40-bit range.
-    //
-    // TODO: can this be handled with a temporary `osDmaSetAddressSize()` like
-    //       flush buffer allocations?
-    //
-    return NV_CHIP_EXTENDED_SYSTEM_PHYSICAL_ADDRESS_BITS - 1;
-}
-
-
-NvU32 gpuarchGetGpcFuseStatusOffset_GB10B(GpuArch *pGpuArch)
-{
-    return NV_FUSE_STATUS_OPT_GPC;
-}
+#endif // __gb10b_dev_fuse_h__

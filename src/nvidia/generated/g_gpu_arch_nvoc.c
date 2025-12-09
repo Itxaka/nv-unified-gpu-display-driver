@@ -190,13 +190,24 @@ static void __nvoc_init_funcTable_GpuArch_1(GpuArch *pThis) {
     {
         pThis->__gpuarchSupportsIgpuRg__ = &gpuarchSupportsIgpuRg_491d52;
     }
-} // End __nvoc_init_funcTable_GpuArch_1 with approximately 10 basic block(s).
+
+    // gpuarchGetGpcFuseStatusOffset -- halified (2 hals) body
+    if (( ((chipHal_HalVarIdx >> 5) == 1UL) && ((1UL << (chipHal_HalVarIdx & 0x1f)) & 0x80000000UL) )) /* ChipHal: GB10B */ 
+    {
+        pThis->__gpuarchGetGpcFuseStatusOffset__ = &gpuarchGetGpcFuseStatusOffset_GB10B;
+    }
+    // default
+    else
+    {
+        pThis->__gpuarchGetGpcFuseStatusOffset__ = &gpuarchGetGpcFuseStatusOffset_4a4dee;
+    }
+} // End __nvoc_init_funcTable_GpuArch_1 with approximately 12 basic block(s).
 
 
-// Initialize vtable(s) for 4 virtual method(s).
+// Initialize vtable(s) for 5 virtual method(s).
 void __nvoc_init_funcTable_GpuArch(GpuArch *pThis) {
 
-    // Initialize vtable(s) with 4 per-object function pointer(s).
+    // Initialize vtable(s) with 5 per-object function pointer(s).
     __nvoc_init_funcTable_GpuArch_1(pThis);
 }
 

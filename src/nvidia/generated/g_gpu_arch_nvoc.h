@@ -80,11 +80,12 @@ struct GpuArch {
     struct GpuHalspecOwner *__nvoc_pbase_GpuHalspecOwner;    // gpuhalspecowner super
     struct GpuArch *__nvoc_pbase_GpuArch;    // gpuarch
 
-    // Vtable with 4 per-object function pointers
+    // Vtable with 5 per-object function pointers
     NvU32 (*__gpuarchGetSystemPhysAddrWidth__)(struct GpuArch * /*this*/);  // halified (4 hals)
     NvU32 (*__gpuarchGetDmaAddrWidth__)(struct GpuArch * /*this*/);  // halified (2 hals) body
     NvBool (*__gpuarchIsZeroFb__)(struct GpuArch * /*this*/);  // halified (2 hals) body
     NvBool (*__gpuarchSupportsIgpuRg__)(struct GpuArch * /*this*/);  // halified (2 hals) body
+    NvU32 (*__gpuarchGetGpcFuseStatusOffset__)(struct GpuArch * /*this*/);  // halified (2 hals) body
 
     // Data members
     NvU32 chipArch;
@@ -145,6 +146,9 @@ NV_STATUS __nvoc_objCreate_GpuArch(GpuArch**, Dynamic*, NvU32,
 #define gpuarchSupportsIgpuRg_FNPTR(pGpuArch) pGpuArch->__gpuarchSupportsIgpuRg__
 #define gpuarchSupportsIgpuRg(pGpuArch) gpuarchSupportsIgpuRg_DISPATCH(pGpuArch)
 #define gpuarchSupportsIgpuRg_HAL(pGpuArch) gpuarchSupportsIgpuRg_DISPATCH(pGpuArch)
+#define gpuarchGetGpcFuseStatusOffset_FNPTR(pGpuArch) pGpuArch->__gpuarchGetGpcFuseStatusOffset__
+#define gpuarchGetGpcFuseStatusOffset(pGpuArch) gpuarchGetGpcFuseStatusOffset_DISPATCH(pGpuArch)
+#define gpuarchGetGpcFuseStatusOffset_HAL(pGpuArch) gpuarchGetGpcFuseStatusOffset_DISPATCH(pGpuArch)
 
 // Dispatch functions
 static inline NvU32 gpuarchGetSystemPhysAddrWidth_DISPATCH(struct GpuArch *pGpuArch) {
@@ -161,6 +165,10 @@ static inline NvBool gpuarchIsZeroFb_DISPATCH(struct GpuArch *pGpuArch) {
 
 static inline NvBool gpuarchSupportsIgpuRg_DISPATCH(struct GpuArch *pGpuArch) {
     return pGpuArch->__gpuarchSupportsIgpuRg__(pGpuArch);
+}
+
+static inline NvU32 gpuarchGetGpcFuseStatusOffset_DISPATCH(struct GpuArch *pGpuArch) {
+    return pGpuArch->__gpuarchGetGpcFuseStatusOffset__(pGpuArch);
 }
 
 NvU32 gpuarchGetSystemPhysAddrWidth_TU102(struct GpuArch *pGpuArch);
@@ -191,6 +199,12 @@ static inline NvBool gpuarchSupportsIgpuRg_cbe027(struct GpuArch *pGpuArch) {
 
 static inline NvBool gpuarchSupportsIgpuRg_491d52(struct GpuArch *pGpuArch) {
     return ((NvBool)(0 != 0));
+}
+
+NvU32 gpuarchGetGpcFuseStatusOffset_GB10B(struct GpuArch *pGpuArch);
+
+static inline NvU32 gpuarchGetGpcFuseStatusOffset_4a4dee(struct GpuArch *pGpuArch) {
+    return 0;
 }
 
 NV_STATUS gpuarchConstruct_IMPL(struct GpuArch *arg_pGpuArch, NvU32 arg_chipArch, NvU32 arg_chipImpl, NvU32 arg_hidrev, TEGRA_CHIP_TYPE arg_tegraType);
