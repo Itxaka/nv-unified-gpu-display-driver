@@ -21,7 +21,7 @@ d580300f41118dacc5569fffa9f47e78c5883141 - kernel-open/common/inc/nv-modeset-int
 5bc7a748c7d3dfa6559ca4f9fe6199e17098ec8f - kernel-open/common/inc/nv-lock.h
 b249abc0a7d0c9889008e98cb2f8515a9d310b85 - kernel-open/common/inc/nvgputypes.h
 e4a4f57abb8769d204468b2f5000c81f5ea7c92f - kernel-open/common/inc/nv-procfs.h
-731cd1cddfa501743b4bf3a533625acc2c1d87df - kernel-open/common/inc/nv.h
+69ffd12eaa3c565f935478868e5f0ade46660cde - kernel-open/common/inc/nv.h
 ede1f77acb43e28391bceac058e00a7a8d799b0d - kernel-open/common/inc/nvmisc.h
 ae374d3e438f8d3b60df8c4602618c58564b73f9 - kernel-open/common/inc/rm-gpu-ops.h
 3f7b20e27e6576ee1f2f0557d269697a0b8af7ec - kernel-open/common/inc/nv-firmware-registry.h
@@ -42,7 +42,7 @@ b986bc6591ba17a74ad81ec4c93347564c6d5165 - kernel-open/common/inc/nvkms-format.h
 143051f69a53db0e7c5d2f846a9c14d666e264b4 - kernel-open/common/inc/nv-kref.h
 56f432032bef4683c2801f46bec5065923475fb1 - kernel-open/common/inc/nv-kthread-q.h
 b4c5d759f035b540648117b1bff6b1701476a398 - kernel-open/common/inc/nvCpuUuid.h
-c551c92e7de645fda78572fcf882cb5249f0f13c - kernel-open/common/inc/nv-linux.h
+5d7fdbf9c5edea6088b471e27a9ce87a500d8f7e - kernel-open/common/inc/nv-linux.h
 7c7888550b12eeb98128ea9ac771b897327f538e - kernel-open/common/inc/nv-hypervisor.h
 f9cb3701681994ff6f32833892d900b0da2b89f6 - kernel-open/common/inc/nv-pgprot.h
 b8700a911ac85770bf25d70b9692308af63966bd - kernel-open/common/inc/nvstatuscodes.h
@@ -84,7 +84,7 @@ b8d361216db85fe897cbced2a9600507b7708c61 - kernel-open/nvidia/libspdm_hkdf_sha.c
 e752c8d9e71a978d7606558146a277db9ae34c80 - kernel-open/nvidia/nvlink_linux.h
 08479fb75b3274440e45e0b4740b7daa30ff3686 - kernel-open/nvidia/i2c_nvswitch.c
 66e2bfc490fb77e0b72a8192b719d3dc74d25d59 - kernel-open/nvidia/nv-pat.c
-26a30f2d26c2a97a6e2ee457d97d32f48b0bf25b - kernel-open/nvidia/nv-vm.c
+3abdd4528338680e0e85d2d7758cc7ba5b21ba79 - kernel-open/nvidia/nv-vm.c
 b8a770cea0629c57d8b0b3d7414d7b0f043ee8cf - kernel-open/nvidia/libspdm_ecc.c
 4c183eb39251cd78d90868ec6f75ebc7a37e6644 - kernel-open/nvidia/os-usermap.c
 8c30b6230439edcbec62636cc93be512bca8637f - kernel-open/nvidia/nv-usermap.c
@@ -97,7 +97,7 @@ f16e6a33b5004566333fb8b99504a0fb95d51226 - kernel-open/nvidia/nv-gpio.c
 8ed2c3b93eeaa52342d944e794180fd5d386688a - kernel-open/nvidia/libspdm_rsa_ext.c
 031b7e3f268142d54c0c6852edf22deb14ccdbe5 - kernel-open/nvidia/procfs_nvswitch.c
 2e5d18118835c19c5ca7edee9bceeae613b9d7f9 - kernel-open/nvidia/nv-procfs.c
-3615996554fbba11e963eb2836ac3a6c53b529dc - kernel-open/nvidia/nv.c
+affe23351c11cbbbe31ce7403738e355a8e64d45 - kernel-open/nvidia/nv.c
 ee81bd3a6396e0f175a1e7dc2a74ad5fe5b39e86 - kernel-open/nvidia/nvlink_errors.h
 65fe797fb5d4af2db67544ddb79d49ab1b7ca859 - kernel-open/nvidia/nv-dsi-parse-panel-props.c
 e3efae4ed920545062a2d06064df8be1a2a42135 - kernel-open/nvidia/nv-caps-imex.h
@@ -118,7 +118,7 @@ c762aa186dc72ed0b9183492f9bd187c301d33d3 - kernel-open/nvidia/nv-kthread-q.c
 70bece14e12b9ffc92816ee8159a4ce596579d78 - kernel-open/nvidia/os-pci.c
 a677049bb56fa5ebe22fe43b0c4a12acd58a6677 - kernel-open/nvidia/nv-p2p.c
 e4d12f027cb5f74124da71bbbc23bcb33651834a - kernel-open/nvidia/nv-pci-table.c
-1034de1ab2403c30bb22d6a65bd2134a540590f4 - kernel-open/nvidia/nv-pci.c
+8b66b2577aa817d8b06712a3f4b92228708d1194 - kernel-open/nvidia/nv-pci.c
 16525904a927d3d6e3ff8bae7600e743c6573b6f - kernel-open/nvidia/nvlink_os.h
 6dfc57ac42bed97c6ff81d82e493f05b369e0b84 - kernel-open/nvidia/nvspdm_cryptlib_extensions.h
 bba706cfbc04b3a880b5e661066f92e765fad663 - kernel-open/nvidia/nv-caps-imex.c
@@ -341,7 +341,7 @@ dcc539ce79e3cb88d01a42aab2f8b029e050c202 - kernel-open/nvidia-uvm/uvm_va_policy.
 d26125e7aa92e7d550cc2819817859c765e1f0c0 - kernel-open/nvidia-uvm/uvm_peer_identity_mappings_test.c
 3731e3df6dfc193712211d5c68ff290318893170 - kernel-open/nvidia-uvm/uvm_api.h
 ed716ebdda3e4c7fbf3c56edf760c6b285aa7f92 - kernel-open/nvidia-uvm/uvm_ampere_fault_buffer.h
-b12cbaf58aaab044cca0eb71602b72e31263f147 - kernel-open/nvidia-uvm/uvm_migrate_pageable.c
+09beb47ff68de5b32b52873d06758fad5c76555c - kernel-open/nvidia-uvm/uvm_migrate_pageable.c
 fe1c83ae6e496f391cc2c2873b4ac5ae2cb6dc93 - kernel-open/nvidia-uvm/uvm_blackwell_fault_buffer.c
 8f58399a42f2c51904a16d295883dc331b229cb5 - kernel-open/nvidia-uvm/uvm_perf_heuristics.h
 8d2dcc086f892dd58270c9e53e747513ed4b2f93 - kernel-open/nvidia-uvm/clb06f.h
@@ -1909,7 +1909,7 @@ c5f16fdf43ca3d2845d120c219d1da11257072b0 - src/nvidia/nv-kernel.ld
 dcf4427b83cce7737f2b784d410291bf7a9612dc - src/nvidia/arch/nvalloc/unix/include/nv-reg.h
 4750735d6f3b334499c81d499a06a654a052713d - src/nvidia/arch/nvalloc/unix/include/nv-caps.h
 3c61881e9730a8a1686e422358cdfff59616b670 - src/nvidia/arch/nvalloc/unix/include/nv_escape.h
-931450f28d4b309ae79fdef4ed0586cd9ca1b931 - src/nvidia/arch/nvalloc/unix/include/nv.h
+09bf68b81a7ac8fd5606019b6d9223fb20dd27b8 - src/nvidia/arch/nvalloc/unix/include/nv.h
 81592e5c17bebad04cd11d73672c859baa070329 - src/nvidia/arch/nvalloc/unix/include/nv-chardev-numbers.h
 e69045379ed58dc0110d16d17eb39a6f600f0d1d - src/nvidia/arch/nvalloc/unix/include/nv-ioctl-lockless-diag.h
 d1b1a1bc1fa30c1a966e95447f7831a06340d2d0 - src/nvidia/arch/nvalloc/unix/include/nv-priv.h
@@ -1924,7 +1924,7 @@ b3ecb82f142a50bdc37eafaeb86d67f10fbcf73f - src/nvidia/arch/nvalloc/unix/include/
 af45762b6eeae912cc2602acf7dc31d30775ade7 - src/nvidia/arch/nvalloc/unix/include/nv-kernel-rmapi-ops.h
 107d1ecb8a128044260915ea259b1e64de3defea - src/nvidia/arch/nvalloc/unix/include/nv-ioctl-numbers.h
 3a26838c4edd3525daa68ac6fc7b06842dc6fc07 - src/nvidia/arch/nvalloc/unix/include/nv-gpu-info.h
-b7622eaf945de214e644f32ad13c27154a28e203 - src/nvidia/arch/nvalloc/unix/src/os.c
+6f45cffdd4375b6ed03be94593a63e4003462a70 - src/nvidia/arch/nvalloc/unix/src/os.c
 b838d02ac2beda655e721af64268f110296ae577 - src/nvidia/arch/nvalloc/unix/src/osmemdesc.c
 0a48bf5690c6c628c12044e619fd33664046a428 - src/nvidia/arch/nvalloc/unix/src/power-management-tegra.c
 a14e071cf7c62254ad8e46644b13f8101e99a771 - src/nvidia/arch/nvalloc/unix/src/subdevice_ctrl_os_unix.c
@@ -2045,7 +2045,7 @@ db1d1e047d00780efbe4c1c1ae6e4fecd3ab49e8 - src/nvidia/generated/g_os_desc_mem_nv
 f1885a68b931c1185e2644b3ebb87105e091c3e0 - src/nvidia/generated/g_mps_api_nvoc.h
 5a02960b22d5646c49edb5d69d8b1a2a3c7a00a9 - src/nvidia/generated/g_system_mem_nvoc.c
 abf2b28e53a9328e7464a4297681e78212274e88 - src/nvidia/generated/g_crashcat_report_nvoc.c
-398a98e4a209e8b46ed1e4b0ef13ed906490f02f - src/nvidia/generated/g_gpu_nvoc.c
+a6bd2df39f4d7fece30e956263fa721e82e87d45 - src/nvidia/generated/g_gpu_nvoc.c
 243f5ff59c417f0a9f70d2736c1f0c0092a352db - src/nvidia/generated/g_bindata_spdmGetBinArchiveIndividualL3Certificate_GB202.c
 c6ba736aa142456a9a55cf18be1d988817302342 - src/nvidia/generated/g_bindata_kgspGetBinArchiveGspRmFmcGfwDebugSigned_GB20B.c
 8a4e66581fd4046af708f981706b9b6776357ef5 - src/nvidia/generated/g_objsweng_nvoc.h
@@ -2096,7 +2096,7 @@ c7fda8cbe109ad2736694ce9ec0e2ab93d0e3f2c - src/nvidia/generated/g_mem_list_nvoc.
 550329b215443dbbc5c44ca2d58e9d0b02a33de9 - src/nvidia/generated/g_os_hal.h
 24e750a7f71063e859aeb1d0992e9c12e05ed102 - src/nvidia/generated/g_conf_compute_nvoc.h
 58617668ac56ab264ab6424e04f1f2e21bd06332 - src/nvidia/generated/g_zbc_api_nvoc.c
-6b5ef0c497f404d53da51974265219ba9d78b126 - src/nvidia/generated/g_mem_desc_nvoc.h
+e95ad26d3163db0220050ebb416ed1e4c78a60fc - src/nvidia/generated/g_mem_desc_nvoc.h
 1702c9d021149c0f5c73ebeda7bea29e246af31d - src/nvidia/generated/g_nv_name_released.h
 3737f569c0888e725e421938f16a42309f548b15 - src/nvidia/generated/g_timed_sema_nvoc.h
 2baafeb4f4e897933073c45eeeacc24f6548e756 - src/nvidia/generated/g_bindata_kgspGetBinArchiveConcatenatedFMCDesc_GB100.c
@@ -2306,7 +2306,7 @@ f9cf5d3a9c0300063133f42afb50e11a75ef8672 - src/nvidia/generated/g_kernel_crashca
 9bcae543181d8e900e6fe41bf921283f0021bcfe - src/nvidia/generated/g_vaspace_api_nvoc.c
 9724a0c907b425369f567f962678cae44cfa2972 - src/nvidia/generated/g_i2c_api_nvoc.c
 f1e900769603e1e6263815bddde77b9a4ac0ec1e - src/nvidia/generated/g_device_nvoc.h
-86905db35f9599ba3dabefb6ddc68079e62c664a - src/nvidia/generated/g_gpu_nvoc.h
+af389d815fcc32710e2e8c0b318daad282a6fdae - src/nvidia/generated/g_gpu_nvoc.h
 874bfd1be6df003818cf6d744c46e1ca44f81905 - src/nvidia/generated/g_io_vaspace_nvoc.c
 e624336d64b1a701d348484bacab2a9df3812932 - src/nvidia/generated/g_phys_mem_nvoc.c
 10529db24fb0501aa7f2aae25e0a87247ab5405c - src/nvidia/generated/g_resource_nvoc.h
@@ -2580,7 +2580,7 @@ c62e61667a41a7b21345100098f0f304274921a4 - src/nvidia/inc/kernel/virtualization/
 fd30fee57ebe313b57f5169d1b11e6e37649479d - src/nvidia/inc/kernel/virtualization/kernel_vgpu_mgr.h
 8ef620afdf720259cead00d20fae73d31e59c2f7 - src/nvidia/inc/kernel/virtualization/hypervisor/hypervisor.h
 47b26ed8b528aed7ce98ee24e8bf9544ac826364 - src/nvidia/inc/kernel/gpuvideo/rmifvideng.h
-2ab29f637699c1db44f7605ab286744f5166529f - src/nvidia/inc/kernel/gpuvideo/video_event.h
+e627ccac0b16b7faa7201c0b4e16ca9717d4c949 - src/nvidia/inc/kernel/gpuvideo/video_event.h
 427595a3fa54529647bf1d511379df2b41b88662 - src/nvidia/inc/kernel/gpuvideo/videoeventlist.h
 087f70f62d81bbcde6f61560a1606b0ba2d8c684 - src/nvidia/inc/kernel/disp/nvfbc_session.h
 701375e96d771b4105f5fe4949ed4a542be4f3d7 - src/nvidia/inc/kernel/os/os_stub.h
@@ -3345,7 +3345,7 @@ e7fe85da91545fc399919320988ac2fc86728dec - src/nvidia/src/kernel/gpu/fsp/kern_fs
 4b6a1ee1b9eff60241f9f84d078fd227cc7beeb3 - src/nvidia/src/kernel/gpu/fsp/arch/hopper/kern_fsp_gh100.c
 c664fd6a7822e855fc651a389837ceb93cd3197e - src/nvidia/src/kernel/gpu/fsp/arch/blackwell/kern_fsp_gb202.c
 1a288c2ced9758e09108a75285b6fa243f05ead4 - src/nvidia/src/kernel/gpu/fsp/arch/blackwell/kern_fsp_gb100.c
-832e30e65f221fd8eaa785d3f6992cd2b50fc7ea - src/nvidia/src/kernel/gpu/gsp/kernel_gsp.c
+091546742ebf98911b21b7246f2126d12ac027b4 - src/nvidia/src/kernel/gpu/gsp/kernel_gsp.c
 7580a64f5e7f7da6e88045e75df4e7aa6cdd3953 - src/nvidia/src/kernel/gpu/gsp/kernel_gsp_trace_rats.c
 190361bdda688117b1bd35ba88f804389b655f82 - src/nvidia/src/kernel/gpu/gsp/kernel_gsp_fwsec.c
 8dca27051fcf7c3dd49a0b5445729852d199db79 - src/nvidia/src/kernel/gpu/gsp/kernel_gsp_booter.c
@@ -3511,7 +3511,7 @@ c735ad9e602b8fefd439aa4d8eccd770c4a7e43b - src/nvidia/src/kernel/gpu/mem_mgr/sec
 c6c3096fae33531839c6c2adb87ae76db5732c8f - src/nvidia/src/kernel/gpu/mem_mgr/mem_utils.c
 3c616b1b80952439e7f884d4131a19563b9dfb35 - src/nvidia/src/kernel/gpu/mem_mgr/mem_mgr_regions.c
 80fa37db5ef0096fac10508b3eae20cb0cff48cf - src/nvidia/src/kernel/gpu/mem_mgr/channel_utils.c
-c3646544830c6248d39990ae4222c59dab52189e - src/nvidia/src/kernel/gpu/mem_mgr/mem_desc.c
+b8d49a66d2693c6ae7daad4d8ca551099f6e2c34 - src/nvidia/src/kernel/gpu/mem_mgr/mem_desc.c
 fefea4d589863cae2a434cc6f8565ac9ec1faffb - src/nvidia/src/kernel/gpu/mem_mgr/ce_utils.c
 43c00c7cad9d751d0a3ce43bde14da15975cfca9 - src/nvidia/src/kernel/gpu/mem_mgr/mem_mgr_vgpu.c
 0d8e2c4b065a4ad69c10cb70eebd0900020d08a1 - src/nvidia/src/kernel/gpu/mem_mgr/objheap.c
@@ -3595,7 +3595,7 @@ fd69ed37e2aee74b55822a2a75bd569edd77802b - src/nvidia/src/kernel/mem_mgr/virt_me
 0f375c0752bc319e9c1b17a33de64e32b2cbc4da - src/nvidia/src/kernel/mem_mgr/io_vaspace.c
 32848e4b0523f041f0e8020cb27e66797abc4d3d - src/nvidia/src/kernel/mem_mgr/mem_multicast_fabric.c
 0820f2555296f51872626fdb45a14e5dd2e73c91 - src/nvidia/src/kernel/mem_mgr/pool_alloc.c
-00923ee1158d546c6ab4552904d5111b33962433 - src/nvidia/src/kernel/mem_mgr/system_mem.c
+310e249f73de58aa582f99fb2585409c44b80b5c - src/nvidia/src/kernel/mem_mgr/system_mem.c
 ce393979ca1e6e6642e2240662300911b5be528a - src/nvidia/src/kernel/mem_mgr/mem_fabric_import_v2.c
 b96f9087acd1310e1757e9e701cbe258c8b7e18f - src/nvidia/src/kernel/mem_mgr/egm_mem.c
 a64b32ca1fbe0e38a36a3c2aae009c3379da5461 - src/nvidia/src/kernel/mem_mgr/os_desc_mem.c

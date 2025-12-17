@@ -4717,6 +4717,14 @@ kgspCreateRadix3_IMPL
     memdescSetPageSize(*ppMemdescRadix3, AT_GPU, RM_PAGE_SIZE_HUGE);
     memdescTagAlloc(status,
             NV_FB_ALLOC_RM_INTERNAL_OWNER_UNNAMED_TAG_17, (*ppMemdescRadix3));
+    if (status == NV_ERR_NO_MEMORY)
+    {
+        // TODO: Bug 5299603
+        NV_PRINTF(LEVEL_INFO, "memdescTagAllocate failed for huge pages, trying again with regular ones\n");
+        memdescSetPageSize(*ppMemdescRadix3, AT_GPU, RM_PAGE_SIZE);
+        memdescTagAlloc(status,
+                NV_FB_ALLOC_RM_INTERNAL_OWNER_UNNAMED_TAG_17, (*ppMemdescRadix3));
+    }
     NV_ASSERT_OK_OR_GOTO(status, status, error_ret);
 
     // Create kernel mapping.
