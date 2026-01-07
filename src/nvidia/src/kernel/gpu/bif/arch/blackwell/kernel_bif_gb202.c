@@ -184,7 +184,7 @@ kbifInitLtr_GB202
     }
     else
     {
-        NV_PRINTF(LEVEL_ERROR, "LTR is disabled in the hierarchy\n");
+        NV_PRINTF(LEVEL_WARNING, "LTR is disabled in the hierarchy\n");
     }
 }
 
