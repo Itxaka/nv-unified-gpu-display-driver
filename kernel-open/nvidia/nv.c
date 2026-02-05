@@ -182,6 +182,13 @@ struct rw_semaphore nv_system_pm_lock;
 static nv_power_state_t nv_system_power_state;
 static nv_pm_action_depth_t nv_system_pm_action_depth;
 struct semaphore nv_system_power_state_lock;
+
+#include <linux/suspend.h>
+
+static int nv_pm_notifier(struct notifier_block *nb, unsigned long event, void *unused);
+static struct notifier_block nv_pm_nb = {
+    .notifier_call = nv_pm_notifier,
+};
 #endif
 
 void *nvidia_p2p_page_t_cache;
@@ -856,11 +863,24 @@ static int __init nvidia_init_module(void)
         return rc;
     }
 
+#if defined(CONFIG_PM)
+    if (NVreg_UseKernelSuspendNotifiers)
+    {
+        /* Register PM notifier for automatic suspend/resume */
+        rc = register_pm_notifier(&nv_pm_nb);
+        if (rc != 0)
+        {
+            nv_printf(NV_DBG_ERRORS, "NVRM: Failed to register PM notifier\n");
+            goto procfs_exit;
+        }
+    }
+#endif
+
     rc = nv_caps_root_init();
     if (rc < 0)
     {
         nv_printf(NV_DBG_ERRORS, "NVRM: failed to initialize capabilities.\n");
-        goto procfs_exit;
+        goto pm_notifier_exit;
     }
 
     rc = nv_caps_imex_init();
@@ -1009,6 +1029,14 @@ caps_imex_exit:
 caps_root_exit:
     nv_caps_root_exit();
 
+pm_notifier_exit:
+#if defined(CONFIG_PM)
+    if (NVreg_UseKernelSuspendNotifiers)
+    {
+        unregister_pm_notifier(&nv_pm_nb);
+    }
+#endif
+
 procfs_exit:
     nv_procfs_exit();
 
@@ -1035,6 +1063,13 @@ static void __exit nvidia_exit_module(void)
     nv_caps_imex_exit();
 
     nv_caps_root_exit();
+
+#if defined(CONFIG_PM)
+    if (NVreg_UseKernelSuspendNotifiers)
+    {
+        unregister_pm_notifier(&nv_pm_nb);
+    }
+#endif
 
     nv_procfs_exit();
 
@@ -4364,6 +4399,45 @@ failure:
     return status;
 }
 
+/*
+ * PM notifier for automatic suspend/resume functionality
+ */
+static int nv_pm_notifier(struct notifier_block *nb, unsigned long event, void *unused)
+{
+    NV_STATUS status;
+    nv_power_state_t power_state;
+    const char *name;
+
+    switch (event) {
+    case PM_SUSPEND_PREPARE:
+        power_state = NV_POWER_STATE_IN_STANDBY;
+        name = "suspend";
+        break;
+
+    case PM_HIBERNATION_PREPARE:
+        power_state = NV_POWER_STATE_IN_HIBERNATE;
+        name = "hibernate";
+        break;
+
+    case PM_POST_SUSPEND:
+    case PM_POST_HIBERNATION:
+        power_state = NV_POWER_STATE_RUNNING;
+        name = "resume";
+        break;
+
+    default:
+        return NOTIFY_DONE;
+    }
+
+    status = nv_set_system_power_state(power_state, nv_procfs_pm_action_depth);
+    if (status != NV_OK) {
+        nv_printf(NV_DBG_ERRORS, "NVRM: PM %s notifier failed: 0x%x\n", name, status);
+        return NOTIFY_BAD;
+    }
+
+    return NOTIFY_OK;
+}
+
 static NV_STATUS
 nv_restore_user_channels(
     nv_state_t *nv
@@ -4508,7 +4582,9 @@ nvidia_suspend(
         goto pci_pm;
     }
 
-    if (nv->preserve_vidmem_allocations && !is_procfs_suspend)
+    if (nv->preserve_vidmem_allocations &&
+        nv_dev_needs_vidmem_preservation(nv) &&
+        !is_procfs_suspend)
     {
         NV_DEV_PRINTF(NV_DBG_ERRORS, nv,
                       "PreserveVideoMemoryAllocations module parameter is set. "
@@ -4648,7 +4724,9 @@ nv_resume_devices(
 
     for (nvl = nv_linux_devices; nvl != NULL; nvl = nvl->next)
     {
-        if (resume_devices)
+        nv_state_t *nv = NV_STATE_PTR(nvl);
+
+        if (resume_devices && nv_dev_needs_vidmem_preservation(nv))
         {
             status = nvidia_resume(nvl->dev, pm_action);
             WARN_ON(status != NV_OK);
@@ -4664,8 +4742,13 @@ nv_resume_devices(
 
     for (nvl = nv_linux_devices; nvl != NULL; nvl = nvl->next)
     {
-        status = nv_restore_user_channels(NV_STATE_PTR(nvl));
-        WARN_ON(status != NV_OK);
+        nv_state_t *nv = NV_STATE_PTR(nvl);
+
+        if (nv_dev_needs_vidmem_preservation(nv))
+        {
+            status = nv_restore_user_channels(nv);
+            WARN_ON(status != NV_OK);
+        }
     }
 
     UNLOCK_NV_LINUX_DEVICES();
@@ -4685,29 +4768,6 @@ nv_suspend_devices(
     nv_linux_state_t *nvl;
     NvBool resume_devices = NV_FALSE;
     NV_STATUS status = NV_OK;
-#if defined(NV_PM_RUNTIME_AVAILABLE)
-    nv_state_t *nv;
-    struct device *dev;
-
-    LOCK_NV_LINUX_DEVICES();
-
-    /* For Tegra PCI iGPU, forbid the GPU suspend via procfs */
-    for (nvl = nv_linux_devices; nvl != NULL && status == NV_OK; nvl = nvl->next)
-    {
-        nv = NV_STATE_PTR(nvl);
-        dev = nvl->dev;
-        if (dev_is_pci(dev) && nv->is_tegra_pci_igpu_rg_enabled)
-        {
-            nv_printf(NV_DBG_INFO,
-                "NVRM: GPU suspend through procfs is forbidden with Tegra iGPU\n");
-            UNLOCK_NV_LINUX_DEVICES();
-
-            return NV_ERR_NOT_SUPPORTED;
-        }
-    }
-
-    UNLOCK_NV_LINUX_DEVICES();
-#endif
 
     nvidia_modeset_suspend(0);
 
@@ -4720,8 +4780,13 @@ nv_suspend_devices(
 
     for (nvl = nv_linux_devices; nvl != NULL && status == NV_OK; nvl = nvl->next)
     {
-        status = nv_preempt_user_channels(NV_STATE_PTR(nvl));
-        WARN_ON(status != NV_OK);
+        nv_state_t *nv = NV_STATE_PTR(nvl);
+
+        if (nv_dev_needs_vidmem_preservation(nv))
+        {
+            status = nv_preempt_user_channels(nv);
+            WARN_ON(status != NV_OK);
+        }
     }
 
     UNLOCK_NV_LINUX_DEVICES();
@@ -4745,8 +4810,13 @@ nv_suspend_devices(
 
     for (nvl = nv_linux_devices; nvl != NULL && status == NV_OK; nvl = nvl->next)
     {
-        status = nvidia_suspend(nvl->dev, pm_action, NV_TRUE);
-        WARN_ON(status != NV_OK);
+        nv_state_t *nv = NV_STATE_PTR(nvl);
+
+        if (nv_dev_needs_vidmem_preservation(nv))
+        {
+            status = nvidia_suspend(nvl->dev, pm_action, NV_TRUE);
+            WARN_ON(status != NV_OK);
+        }
     }
     if (status != NV_OK)
     {
@@ -4762,12 +4832,14 @@ done:
 
         for (nvl = nv_linux_devices; nvl != NULL; nvl = nvl->next)
         {
-            if (resume_devices)
+            nv_state_t *nv = NV_STATE_PTR(nvl);
+
+            if (resume_devices && nv_dev_needs_vidmem_preservation(nv))
             {
                 nvidia_resume(nvl->dev, NV_PM_ACTION_RESUME);
             }
 
-            nv_restore_user_channels(NV_STATE_PTR(nvl));
+            nv_restore_user_channels(nv);
         }
 
         UNLOCK_NV_LINUX_DEVICES();
@@ -6331,12 +6403,13 @@ void NV_API_CALL nv_set_gpu_pg_mask
 
     // overlay the gpu_pg_mask from module parameter
     if (NVreg_TegraGpuPgMask != NV_TEGRA_PCI_IGPU_PG_MASK_DEFAULT) {
-        nv_printf(NV_DBG_INFO, "NVRM: overlay gpu_pg_mask with module parameter.\n");
         nv->tegra_pci_igpu_pg_mask = NVreg_TegraGpuPgMask;
+        nv_printf(NV_DBG_INFO, "NVRM: overlay gpu_pg_mask " \
+                "with module parameter %u.\n", nv->tegra_pci_igpu_pg_mask);
     }
 
     if (nv->tegra_pci_igpu_pg_mask == NV_TEGRA_PCI_IGPU_PG_MASK_DEFAULT) {
-        nv_printf(NV_DBG_INFO, "NVRM: Using default gpu_pg_mask. "\
+        nv_printf(NV_DBG_INFO, "NVRM: Using default gpu_pg_mask. " \
                                     "There's no need to send BPMP MRQ.\n");
         return;
     }
@@ -6372,6 +6445,13 @@ void NV_API_CALL nv_set_gpu_pg_mask
     nv_printf(NV_DBG_INFO, "NVRM: gpu_pg_mask configuration is not supported\n");
 #endif // defined(NV_PM_RUNTIME_AVAILABLE) && defined(NV_PM_DOMAIN_AVAILABLE)
 #endif // defined(NV_BPMP_MRQ_HAS_STRAP_SET)
+}
+
+void NV_API_CALL nv_trigger_gpu_flr(nv_state_t *nv)
+{
+    nv_linux_state_t *nvl = NV_GET_NVL_FROM_NV_STATE(nv);
+
+    os_pci_trigger_flr((void *)nvl->pci_dev);
 }
 
 module_init(nvidia_init_module);

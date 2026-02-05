@@ -821,8 +821,11 @@ void NV_API_CALL rm_init_tegra_dynamic_power_management(
     nv_priv_t *nvp = NV_GET_NV_PRIV(nv);
     void *fp;
 
-    if (!nv->supports_tegra_igpu_rg)
+    if (!nv->supports_tegra_igpu_rg) {
+        NV_PRINTF(LEVEL_INFO,
+            "NVRM: Tegra PCI iGPU Rail-Gating is not supported on this platform.\n");
         return;
+    }
 
     NV_ENTER_RM_RUNTIME(sp,fp);
 
