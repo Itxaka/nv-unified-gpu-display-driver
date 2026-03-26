@@ -1072,6 +1072,10 @@ err_nv_pci_gb10b_add_devfreq_device_opp:
 static int
 nv_pci_gb10b_register_devfreq(struct pci_dev *pdev)
 {
+    if (!pdev->dev.of_node) {
+        nv_printf(NV_DBG_INFO, "NVRM: skipping devfreq (no OF node)\n");
+        return 0;
+    }
     nv_linux_state_t *nvl = pci_get_drvdata(pdev);
     nv_state_t *nv = NV_STATE_PTR(nvl);
     struct pci_bus *pbus = pdev->bus;
