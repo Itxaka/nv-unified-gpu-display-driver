@@ -27,6 +27,19 @@
 #include "nvtypes.h"
 
 /*
+ * Some kernels expose atomic DRM APIs needed by nvidia-drm while the
+ * drm_atomic_available probe resolves to false. Keep feature-level conftest
+ * guards, but force-enable the atomic code path when DRM itself is available.
+ */
+#if defined(NV_DRM_AVAILABLE) && !defined(NV_DRM_ATOMIC_MODESET_AVAILABLE)
+#define NV_DRM_ATOMIC_MODESET_AVAILABLE
+#endif
+
+#if defined(NV_DRM_ATOMIC_MODESET_AVAILABLE) && !defined(NV_DRM_ATOMIC_STATE_HAS_NEW_STATE_FIELDS)
+#define NV_DRM_ATOMIC_STATE_HAS_NEW_STATE_FIELDS
+#endif
+
+/*
  * NOTE: This file is expected to get included at the top before including any
  * of linux/drm headers.
  *

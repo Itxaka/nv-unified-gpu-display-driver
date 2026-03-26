@@ -78,6 +78,14 @@
 #include <linux/pci-ats.h>
 #endif
 
+#if defined(NV_PCI_RESIZE_RESOURCE_HAS_EXCLUDE_BARS_ARG)
+#define NV_PCI_RESIZE_RESOURCE(dev, resno, size) \
+    pci_resize_resource((dev), (resno), (size), 0)
+#else
+#define NV_PCI_RESIZE_RESOURCE(dev, resno, size) \
+    pci_resize_resource((dev), (resno), (size))
+#endif
+
 extern int NVreg_GrdmaPciTopoCheckOverride;
 
 static void
@@ -244,7 +252,7 @@ static int nv_resize_pcie_bars(struct pci_dev *pci_dev) {
 
 resize:
     /* Attempt to resize BAR1 to the largest supported size */
-    r = pci_resize_resource(pci_dev, NV_GPU_BAR1, requested_size);
+    r = NV_PCI_RESIZE_RESOURCE(pci_dev, NV_GPU_BAR1, requested_size);
 
     if (r) {
         if (r == -ENOSPC)

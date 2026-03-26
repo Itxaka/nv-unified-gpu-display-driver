@@ -242,6 +242,11 @@ fail:
 struct drm_framebuffer *nv_drm_framebuffer_create(
     struct drm_device *dev,
     struct drm_file *file,
+#if defined(NV_DRM_MODE_CONFIG_FUNCS_HAS_FB_CREATE_WITH_FORMAT_INFO_ARG)
+    const struct drm_format_info *info,
+#elif defined(NV_DRM_ATOMIC_STATE_HAS_NEW_STATE_FIELDS)
+    const struct drm_format_info *info,
+#endif
     const struct drm_mode_fb_cmd2 *cmd)
 {
     struct nv_drm_device *nv_dev = to_nv_device(dev);
@@ -286,10 +291,15 @@ struct drm_framebuffer *nv_drm_framebuffer_create(
 
     /* Fill out framebuffer metadata from the userspace fb creation request */
 
-    drm_helper_mode_fill_fb_struct(
-        dev,
-        &nv_fb->base,
-        cmd);
+    nv_drm_helper_mode_fill_fb_struct(dev, &nv_fb->base,
+#if defined(NV_DRM_MODE_CONFIG_FUNCS_HAS_FB_CREATE_WITH_FORMAT_INFO_ARG)
+                                      info,
+#elif defined(NV_DRM_ATOMIC_STATE_HAS_NEW_STATE_FIELDS)
+                                      info,
+#else
+                                      NULL,
+#endif
+                                      cmd);
 
     /*
      * Finish up FB initialization by creating the backing NVKMS surface and

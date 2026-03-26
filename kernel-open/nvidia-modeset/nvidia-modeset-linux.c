@@ -2225,6 +2225,7 @@ module_init(nvkms_init);
 module_exit(nvkms_exit);
 
   MODULE_LICENSE("Dual MIT/GPL");
+MODULE_DESCRIPTION("NVIDIA Linux kernel modesetting interface");
 
 MODULE_INFO(supported, "external");
 MODULE_VERSION(NV_VERSION_STRING);

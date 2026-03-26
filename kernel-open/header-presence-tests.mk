@@ -6,6 +6,7 @@ NV_HEADER_PRESENCE_TESTS = \
   drm/display/drm_hdcp.h \
   drm/display/drm_hdcp_helper.h \
   drm/drmP.h \
+  drm/drm_print.h \
   drm/drm_aperture.h \
   drm/drm_atomic_state_helper.h \
   drm/drm_atomic_uapi.h \
@@ -36,6 +37,7 @@ NV_HEADER_PRESENCE_TESTS = \
   linux/interconnect.h \
   linux/ioasid.h \
   linux/stdarg.h \
+  linux/pfn_t.h \
   linux/iosys-map.h \
   linux/vfio_pci_core.h \
   linux/cc_platform.h \

@@ -69,6 +69,8 @@ NV_CONFTEST_TYPE_COMPILE_TESTS += mpol_preferred_many_present
 NV_CONFTEST_TYPE_COMPILE_TESTS += mmu_interval_notifier
 NV_CONFTEST_TYPE_COMPILE_TESTS += sg_dma_page_iter
 NV_CONFTEST_TYPE_COMPILE_TESTS += struct_page_has_zone_device_data
+NV_CONFTEST_TYPE_COMPILE_TESTS += struct_dev_pagemap_ops_has_folio_free
+NV_CONFTEST_TYPE_COMPILE_TESTS += zone_device_page_init_has_pgmap_order_args
 
 NV_CONFTEST_SYMBOL_COMPILE_TESTS += is_export_symbol_present_int_active_memcg
 NV_CONFTEST_SYMBOL_COMPILE_TESTS += is_export_symbol_present_migrate_vma_setup

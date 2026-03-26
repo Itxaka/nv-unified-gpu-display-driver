@@ -33,7 +33,16 @@
 #include "linux/dma-buf.h"
 #include "linux/mm.h"
 #include "nv-mm.h"
+
+#if defined(NV_LINUX_PFN_T_H_PRESENT)
 #include "linux/pfn_t.h"
+#endif
+
+#if defined(NV_VMF_INSERT_MIXED_HAS_UNSIGNED_LONG_PFN_ARG)
+#define NV_DRM_MIXED_PFN_ARG(_pfn) (_pfn)
+#else
+#define NV_DRM_MIXED_PFN_ARG(_pfn) pfn_to_pfn_t(_pfn)
+#endif
 
 #if defined(NV_BSD)
 #include <vm/vm_pageout.h>
@@ -111,7 +120,7 @@ static vm_fault_t __nv_vm_insert_mixed_helper(
 {
     int ret;
 
-    ret = vm_insert_mixed(vma, address, pfn_to_pfn_t(pfn));
+    ret = vm_insert_mixed(vma, address, NV_DRM_MIXED_PFN_ARG(pfn));
 
     switch (ret) {
         case 0:
@@ -148,7 +157,7 @@ static vm_fault_t __nv_drm_gem_user_memory_handle_vma_fault(
 #if !defined(NV_LINUX)
     return vmf_insert_pfn(vma, address, pfn);
 #elif defined(NV_VMF_INSERT_MIXED_PRESENT)
-    return vmf_insert_mixed(vma, address, pfn_to_pfn_t(pfn));
+    return vmf_insert_mixed(vma, address, NV_DRM_MIXED_PFN_ARG(pfn));
 #else
     return __nv_vm_insert_mixed_helper(vma, address, pfn);
 #endif

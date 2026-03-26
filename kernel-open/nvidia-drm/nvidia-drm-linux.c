@@ -61,6 +61,7 @@ module_init(nv_linux_drm_init);
 module_exit(nv_linux_drm_exit);
 
   MODULE_LICENSE("Dual MIT/GPL");
+MODULE_DESCRIPTION("NVIDIA DRM kernel module");
 
 MODULE_INFO(supported, "external");
 MODULE_VERSION(NV_VERSION_STRING);

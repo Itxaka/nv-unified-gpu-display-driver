@@ -1279,5 +1279,6 @@ module_init(uvm_init_entry);
 module_exit(uvm_exit_entry);
 
 MODULE_LICENSE("Dual MIT/GPL");
+MODULE_DESCRIPTION("NVIDIA Unified Virtual Memory kernel module");
 MODULE_INFO(supported, "external");
 MODULE_VERSION(NV_VERSION_STRING);

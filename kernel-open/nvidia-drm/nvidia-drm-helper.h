@@ -193,12 +193,22 @@ int nv_drm_atomic_helper_disable_all(struct drm_device *dev,
  * this tricky confusion this macro is deprecated.
  */
 #if !defined(for_each_connector_in_state)
+#if defined(NV_DRM_ATOMIC_STATE_HAS_NEW_STATE_FIELDS)
+#define NV_DRM_ATOMIC_CONNECTOR_STATE_ENTRY(__entry) ((__entry).new_state)
+#define NV_DRM_ATOMIC_CRTC_STATE_ENTRY(__entry)      ((__entry).new_state)
+#define NV_DRM_ATOMIC_PLANE_STATE_ENTRY(__entry)     ((__entry).new_state)
+#else
+#define NV_DRM_ATOMIC_CONNECTOR_STATE_ENTRY(__entry) ((__entry).state)
+#define NV_DRM_ATOMIC_CRTC_STATE_ENTRY(__entry)      ((__entry).state)
+#define NV_DRM_ATOMIC_PLANE_STATE_ENTRY(__entry)     ((__entry).state)
+#endif
+
 #define nv_drm_for_each_connector_in_state(__state,                         \
                                            connector, connector_state, __i) \
        for ((__i) = 0;                                                      \
             (__i) < (__state)->num_connector &&                             \
             ((connector) = (__state)->connectors[__i].ptr,                  \
-            (connector_state) = (__state)->connectors[__i].state, 1);       \
+            (connector_state) = NV_DRM_ATOMIC_CONNECTOR_STATE_ENTRY((__state)->connectors[__i]), 1); \
             (__i)++)                                                        \
                for_each_if (connector)
 #else
@@ -225,7 +235,7 @@ int nv_drm_atomic_helper_disable_all(struct drm_device *dev,
        for ((__i) = 0;                                                \
             (__i) < (__state)->dev->mode_config.num_crtc &&           \
             ((crtc) = (__state)->crtcs[__i].ptr,                      \
-            (crtc_state) = (__state)->crtcs[__i].state, 1);           \
+            (crtc_state) = NV_DRM_ATOMIC_CRTC_STATE_ENTRY((__state)->crtcs[__i]), 1); \
             (__i)++)                                                  \
                for_each_if (crtc_state)
 #else
@@ -250,7 +260,7 @@ int nv_drm_atomic_helper_disable_all(struct drm_device *dev,
        for ((__i) = 0;                                                   \
             (__i) < (__state)->dev->mode_config.num_total_plane &&       \
             ((plane) = (__state)->planes[__i].ptr,                       \
-            (plane_state) = (__state)->planes[__i].state, 1);            \
+            (plane_state) = NV_DRM_ATOMIC_PLANE_STATE_ENTRY((__state)->planes[__i]), 1); \
             (__i)++)                                                     \
                for_each_if (plane_state)
 #else
@@ -397,10 +407,10 @@ static inline int
 nv_drm_connector_attach_encoder(struct drm_connector *connector,
                                 struct drm_encoder *encoder)
 {
-#if defined(NV_DRM_CONNECTOR_FUNCS_HAVE_MODE_IN_NAME)
-    return drm_mode_connector_attach_encoder(connector, encoder);
-#else
+#if defined(NV_DRM_CONNECTOR_ATTACH_ENCODER_PRESENT) || defined(NV_DRM_ATOMIC_STATE_HAS_NEW_STATE_FIELDS)
     return drm_connector_attach_encoder(connector, encoder);
+#else
+    return drm_mode_connector_attach_encoder(connector, encoder);
 #endif
 }
 
@@ -408,10 +418,58 @@ static inline int
 nv_drm_connector_update_edid_property(struct drm_connector *connector,
                                       const struct edid *edid)
 {
-#if defined(NV_DRM_CONNECTOR_FUNCS_HAVE_MODE_IN_NAME)
-    return drm_mode_connector_update_edid_property(connector, edid);
-#else
+#if defined(NV_DRM_CONNECTOR_UPDATE_EDID_PROPERTY_PRESENT) || defined(NV_DRM_ATOMIC_STATE_HAS_NEW_STATE_FIELDS)
     return drm_connector_update_edid_property(connector, edid);
+#else
+    return drm_mode_connector_update_edid_property(connector, edid);
+#endif
+}
+
+static inline int
+nv_drm_mode_create_hdmi_colorspace_property(struct drm_connector *connector,
+                                            u32 supported_colorspaces)
+{
+#if defined(NV_DRM_MODE_CREATE_HDMI_COLORSPACE_PROPERTY_HAS_SUPPORTED_COLORSPACES_ARG) || defined(NV_DRM_ATOMIC_STATE_HAS_NEW_STATE_FIELDS)
+    return drm_mode_create_hdmi_colorspace_property(connector, supported_colorspaces);
+#else
+    return drm_mode_create_hdmi_colorspace_property(connector);
+#endif
+}
+
+static inline int
+nv_drm_mode_create_dp_colorspace_property(struct drm_connector *connector,
+                                          u32 supported_colorspaces)
+{
+#if defined(NV_DRM_MODE_CREATE_DP_COLORSPACE_PROPERTY_HAS_SUPPORTED_COLORSPACES_ARG) || defined(NV_DRM_ATOMIC_STATE_HAS_NEW_STATE_FIELDS)
+    return drm_mode_create_dp_colorspace_property(connector, supported_colorspaces);
+#else
+    return drm_mode_create_dp_colorspace_property(connector);
+#endif
+}
+
+static inline int
+nv_drm_connector_attach_colorspace_property(struct drm_connector *connector)
+{
+#if defined(NV_DRM_CONNECTOR_ATTACH_COLORSPACE_PROPERTY_PRESENT) || defined(NV_DRM_ATOMIC_STATE_HAS_NEW_STATE_FIELDS)
+    return drm_connector_attach_colorspace_property(connector);
+#else
+    return 0;
+#endif
+}
+
+#include <drm/drm_modeset_helper.h>
+
+static inline void
+nv_drm_helper_mode_fill_fb_struct(struct drm_device *dev,
+                                  struct drm_framebuffer *fb,
+                                  const struct drm_format_info *info,
+                                  const struct drm_mode_fb_cmd2 *cmd)
+{
+#if defined(NV_DRM_HELPER_MODE_FILL_FB_STRUCT_HAS_FORMAT_INFO_ARG) || defined(NV_DRM_ATOMIC_STATE_HAS_NEW_STATE_FIELDS)
+    drm_helper_mode_fill_fb_struct(dev, fb, info, cmd);
+#else
+    (void)info;
+    drm_helper_mode_fill_fb_struct(dev, fb, cmd);
 #endif
 }
 

@@ -1517,10 +1517,8 @@ compile_test() {
             #if defined(NV_DRM_DRMP_H_PRESENT)
             #include <drm/drmP.h>
             #endif
+            #include <drm/drm_mode_config.h>
             #include <drm/drm_atomic.h>
-            #if !defined(CONFIG_DRM) && !defined(CONFIG_DRM_MODULE) && !defined(__FreeBSD__)
-            #error DRM not enabled
-            #endif
             void conftest_drm_atomic_modeset_available(void) {
                 size_t a;
 
@@ -1532,28 +1530,7 @@ compile_test() {
 
             if [ -f conftest$$.o ]; then
                 rm -f conftest$$.o
-
-                echo "$CONFTEST_PREAMBLE
-                #if defined(NV_DRM_DRMP_H_PRESENT)
-                #include <drm/drmP.h>
-                #endif
-                #include <drm/drm_atomic.h>
-                #if defined(NV_DRM_DRM_ATOMIC_UAPI_H_PRESENT)
-                #include <drm/drm_atomic_uapi.h>
-                #endif
-                void conftest_drm_atomic_set_mode_prop_for_crtc(void) {
-                    drm_atomic_set_mode_prop_for_crtc();
-                }" > conftest$$.c;
-
-                $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
-                rm -f conftest$$.c
-
-                if [ -f conftest$$.o ]; then
-                    rm -f conftest$$.o
-                    echo "#undef NV_DRM_ATOMIC_MODESET_AVAILABLE" | append_conftest "generic"
-                else
-                    echo "#define NV_DRM_ATOMIC_MODESET_AVAILABLE" | append_conftest "generic"
-                fi
+                echo "#define NV_DRM_ATOMIC_MODESET_AVAILABLE" | append_conftest "generic"
             else
                 echo "#undef NV_DRM_ATOMIC_MODESET_AVAILABLE" | append_conftest "generic"
             fi
@@ -2501,6 +2478,35 @@ compile_test() {
             }"
 
             compile_check_conftest "$CODE" "NV_DMA_IS_DIRECT_PRESENT" "" "functions"
+        ;;
+
+        dma_map_ops_has_map_phys)
+            #
+            # Determine if struct dma_map_ops uses the newer map_phys/unmap_phys
+            # hooks instead of map_resource/unmap_resource.
+            #
+            # map_phys/unmap_phys are present in Linux v6.19+.
+            #
+            echo "$CONFTEST_PREAMBLE
+            #include <linux/dma-map-ops.h>
+            int conftest_dma_map_ops_has_map_phys(void) {
+                return offsetof(struct dma_map_ops, map_phys);
+            }
+            int conftest_dma_map_ops_has_unmap_phys(void) {
+                return offsetof(struct dma_map_ops, unmap_phys);
+            }" > conftest$$.c
+
+            $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+            rm -f conftest$$.c
+
+            if [ -f conftest$$.o ]; then
+                echo "#define NV_DMA_MAP_OPS_HAS_MAP_PHYS" | append_conftest "types"
+                rm -f conftest$$.o
+                return
+            else
+                echo "#undef NV_DMA_MAP_OPS_HAS_MAP_PHYS" | append_conftest "types"
+                return
+            fi
         ;;
 
         cmd_uphy_display_port_init)
@@ -4069,6 +4075,22 @@ compile_test() {
             compile_check_conftest "$CODE" "NV_PCI_REBAR_GET_POSSIBLE_SIZES_PRESENT" "" "functions"
         ;;
 
+        pci_resize_resource_has_exclude_bars_arg)
+            #
+            # Determine if pci_resize_resource() takes an exclude_bars mask.
+            #
+            # Added by commit 0c0854eb8a54 ("PCI: Add exclude list support to
+            # pci_resize_resource()") in v6.19.
+            #
+            CODE="
+            #include <linux/pci.h>
+            void conftest_pci_resize_resource_has_exclude_bars_arg(struct pci_dev *pdev) {
+                pci_resize_resource(pdev, 0, 0, 0);
+            }"
+
+            compile_check_conftest "$CODE" "NV_PCI_RESIZE_RESOURCE_HAS_EXCLUDE_BARS_ARG" "" "types"
+        ;;
+
         drm_connector_has_override_edid)
             #
             # Determine if 'struct drm_connector' has an 'override_edid' member.
@@ -4112,14 +4134,18 @@ compile_test() {
             # Determine if the 'vm_area_struct' structure has
             # const 'vm_flags'.
             #
-            # A union of '__vm_flags' and 'const vm_flags' was added by
-            # commit bc292ab00f6c ("mm: introduce vma->vm_flags wrapper
-            # functions") in v6.3.
+            # vm_flags_set()/vm_flags_clear() wrappers are used when vm_flags
+            # is read-only (or abstracted behind wrappers in newer kernels).
+            #
+            # Older kernels without read-only vm_flags do not provide these
+            # helpers.
             #
             CODE="
-            #include <linux/mm_types.h>
-            int conftest_vm_area_struct_has_const_vm_flags(void) {
-                return offsetof(struct vm_area_struct, __vm_flags);
+            #include <linux/mm.h>
+            void conftest_vm_area_struct_has_const_vm_flags(struct vm_area_struct *vma,
+                                                            vm_flags_t flags) {
+                vm_flags_set(vma, flags);
+                vm_flags_clear(vma, flags);
             }"
 
             compile_check_conftest "$CODE" "NV_VM_AREA_STRUCT_HAS_CONST_VM_FLAGS" "" "types"
@@ -4590,6 +4616,100 @@ compile_test() {
             compile_check_conftest "$CODE" "NV_DRM_MODE_CREATE_DP_COLORSPACE_PROPERTY_HAS_SUPPORTED_COLORSPACES_ARG" "" "types"
         ;;
 
+        drm_mode_create_hdmi_colorspace_property_has_supported_colorspaces_arg)
+            # Determine if drm_mode_create_hdmi_colorspace_property() takes the
+            # 'supported_colorspaces' argument.
+            CODE="
+            #include <drm/drm_crtc.h>
+            #include <drm/drm_connector.h>
+
+            typeof(drm_mode_create_hdmi_colorspace_property) conftest_drm_mode_create_hdmi_colorspace_property_has_supported_colorspaces_arg;
+            int conftest_drm_mode_create_hdmi_colorspace_property_has_supported_colorspaces_arg(struct drm_connector *connector,
+                                                                                                 u32 supported_colorspaces)
+            {
+                return 0;
+            }"
+
+            compile_check_conftest "$CODE" "NV_DRM_MODE_CREATE_HDMI_COLORSPACE_PROPERTY_HAS_SUPPORTED_COLORSPACES_ARG" "" "types"
+        ;;
+
+        drm_connector_attach_encoder_present)
+            CODE="
+            #include <drm/drm_connector.h>
+            void conftest_drm_connector_attach_encoder_present(void) {
+                drm_connector_attach_encoder();
+            }"
+
+            compile_check_conftest "$CODE" "NV_DRM_CONNECTOR_ATTACH_ENCODER_PRESENT" "" "functions"
+        ;;
+
+        drm_connector_update_edid_property_present)
+            CODE="
+            #include <drm/drm_connector.h>
+            void conftest_drm_connector_update_edid_property_present(void) {
+                drm_connector_update_edid_property();
+            }"
+
+            compile_check_conftest "$CODE" "NV_DRM_CONNECTOR_UPDATE_EDID_PROPERTY_PRESENT" "" "functions"
+        ;;
+
+        drm_connector_attach_colorspace_property_present)
+            CODE="
+            #include <drm/drm_connector.h>
+            void conftest_drm_connector_attach_colorspace_property_present(void) {
+                drm_connector_attach_colorspace_property();
+            }"
+
+            compile_check_conftest "$CODE" "NV_DRM_CONNECTOR_ATTACH_COLORSPACE_PROPERTY_PRESENT" "" "functions"
+        ;;
+
+        drm_helper_mode_fill_fb_struct_has_format_info_arg)
+            CODE="
+            #include <drm/drm_modeset_helper.h>
+
+            typeof(drm_helper_mode_fill_fb_struct) conftest_drm_helper_mode_fill_fb_struct_has_format_info_arg;
+            void conftest_drm_helper_mode_fill_fb_struct_has_format_info_arg(struct drm_device *dev,
+                                                                              struct drm_framebuffer *fb,
+                                                                              const struct drm_format_info *info,
+                                                                              const struct drm_mode_fb_cmd2 *mode_cmd)
+            {
+            }"
+
+            compile_check_conftest "$CODE" "NV_DRM_HELPER_MODE_FILL_FB_STRUCT_HAS_FORMAT_INFO_ARG" "" "types"
+        ;;
+
+        drm_mode_config_funcs_has_fb_create_with_format_info_arg)
+            CODE="
+            #include <drm/drm_mode_config.h>
+
+            static const struct drm_mode_config_funcs *funcs;
+            typeof(*funcs->fb_create) conftest_drm_mode_config_funcs_has_fb_create_with_format_info_arg;
+
+            struct drm_framebuffer *
+            conftest_drm_mode_config_funcs_has_fb_create_with_format_info_arg(struct drm_device *dev,
+                                                                               struct drm_file *file_priv,
+                                                                               const struct drm_format_info *info,
+                                                                               const struct drm_mode_fb_cmd2 *mode_cmd)
+            {
+                return NULL;
+            }"
+
+            compile_check_conftest "$CODE" "NV_DRM_MODE_CONFIG_FUNCS_HAS_FB_CREATE_WITH_FORMAT_INFO_ARG" "" "types"
+        ;;
+
+        drm_atomic_state_has_new_state_fields)
+            CODE="
+            #include <drm/drm_atomic.h>
+            int conftest_drm_atomic_state_has_new_state_fields(void)
+            {
+                return offsetof(struct __drm_planes_state, new_state) +
+                       offsetof(struct __drm_crtcs_state, new_state) +
+                       offsetof(struct __drm_connnectors_state, new_state);
+            }"
+
+            compile_check_conftest "$CODE" "NV_DRM_ATOMIC_STATE_HAS_NEW_STATE_FIELDS" "" "types"
+        ;;
+
         drm_syncobj_features_present)
             # Determine if DRIVER_SYNCOBJ and DRIVER_SYNCOBJ_TIMELINE DRM
             # driver features are present. Timeline DRM synchronization objects
@@ -4707,6 +4827,24 @@ compile_test() {
             }"
 
             compile_check_conftest "$CODE" "NV_VMF_INSERT_MIXED_PRESENT" "" "functions"
+        ;;
+
+        vmf_insert_mixed_has_unsigned_long_pfn_arg)
+            #
+            # Determine if vmf_insert_mixed() takes unsigned long pfn as the
+            # third argument.
+            #
+            CODE="
+            #include <linux/mm.h>
+            vm_fault_t conftest_vmf_insert_mixed_has_unsigned_long_pfn_arg(
+                struct vm_area_struct *vma,
+                unsigned long addr,
+                unsigned long pfn)
+            {
+                return vmf_insert_mixed(vma, addr, pfn);
+            }"
+
+            compile_check_conftest "$CODE" "NV_VMF_INSERT_MIXED_HAS_UNSIGNED_LONG_PFN_ARG" "" "types"
         ;;
 
         sg_dma_page_iter)
@@ -4846,6 +4984,21 @@ compile_test() {
             compile_check_conftest "$CODE" "NV_STRUCT_PAGE_HAS_ZONE_DEVICE_DATA" "" "types"
         ;;
 
+        struct_dev_pagemap_ops_has_folio_free)
+            #
+            # Determine if struct dev_pagemap_ops has a 'folio_free' field.
+            #
+            # page_free was replaced by folio_free in v6.19.
+            #
+            CODE="
+            #include <linux/memremap.h>
+            int conftest_struct_dev_pagemap_ops_has_folio_free(void) {
+                return offsetof(struct dev_pagemap_ops, folio_free);
+            }"
+
+            compile_check_conftest "$CODE" "NV_STRUCT_DEV_PAGEMAP_OPS_HAS_FOLIO_FREE" "" "types"
+        ;;
+
         page_pgmap)
             #
             # Determine if the page_pgmap() function is present.
@@ -4860,6 +5013,25 @@ compile_test() {
             }"
 
             compile_check_conftest "$CODE" "NV_PAGE_PGMAP_PRESENT" "" "functions"
+        ;;
+
+        zone_device_page_init_has_pgmap_order_args)
+            #
+            # Determine if zone_device_page_init() takes pgmap and order
+            # arguments in addition to the page.
+            #
+            # The multi-argument form is present in v6.19 and later.
+            #
+            CODE="
+            #include <linux/memremap.h>
+            void conftest_zone_device_page_init_has_pgmap_order_args(void) {
+                struct page *page = NULL;
+                struct dev_pagemap *pgmap = NULL;
+
+                zone_device_page_init(page, pgmap, 0);
+            }"
+
+            compile_check_conftest "$CODE" "NV_ZONE_DEVICE_PAGE_INIT_HAS_PGMAP_ORDER_ARGS" "" "types"
         ;;
 
     folio_test_swapcache)
@@ -5013,11 +5185,12 @@ compile_test() {
             # drm_display_mode") in linux-next, expected in v6.15.
             #
             CODE="
-            #include <drm/drm_atomic_helper.h>
+            #include <drm/drm_modeset_helper_vtables.h>
 
-            static int conftest_drm_connector_mode_valid(struct drm_connector *connector,
-                                                         const struct drm_display_mode *mode) {
-                return 0;
+            static enum drm_mode_status
+            conftest_drm_connector_mode_valid(struct drm_connector *connector,
+                                             const struct drm_display_mode *mode) {
+                return MODE_OK;
             }
 
             const struct drm_connector_helper_funcs conftest_drm_connector_helper_funcs = {

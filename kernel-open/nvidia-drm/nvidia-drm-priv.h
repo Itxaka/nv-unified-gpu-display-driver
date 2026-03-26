@@ -34,6 +34,10 @@
 #include <drm/drm_device.h>
 #include <drm/drm_gem.h>
 
+#if defined(NV_DRM_DRM_PRINT_H_PRESENT)
+#include <drm/drm_print.h>
+#endif
+
 #include "nvidia-drm-os-interface.h"
 
 #include "nvkms-kapi.h"

@@ -310,11 +310,14 @@ static int nv_drm_connector_get_modes(struct drm_connector *connector)
     return count;
 }
 
-static int nv_drm_connector_mode_valid(struct drm_connector    *connector,
-#if defined(NV_DRM_CONNECTOR_HELPER_FUNCS_MODE_VALID_HAS_CONST_MODE_ARG)
-                                       const struct drm_display_mode *mode)
+#if defined(NV_DRM_CONNECTOR_HELPER_FUNCS_MODE_VALID_HAS_CONST_MODE_ARG) || defined(NV_DRM_ATOMIC_STATE_HAS_NEW_STATE_FIELDS)
+static enum drm_mode_status
+nv_drm_connector_mode_valid(struct drm_connector *connector,
+                            const struct drm_display_mode *mode)
 #else
-                                       struct drm_display_mode *mode)
+static int
+nv_drm_connector_mode_valid(struct drm_connector *connector,
+                            struct drm_display_mode *mode)
 #endif
 {
     struct drm_device *dev = connector->dev;
@@ -350,11 +353,9 @@ nv_drm_connector_best_encoder(struct drm_connector *connector)
     return NULL;
 }
 
-#if defined(NV_DRM_MODE_CREATE_DP_COLORSPACE_PROPERTY_HAS_SUPPORTED_COLORSPACES_ARG)
 static const NvU32 __nv_drm_connector_supported_colorspaces =
     BIT(DRM_MODE_COLORIMETRY_BT2020_RGB) |
     BIT(DRM_MODE_COLORIMETRY_BT2020_YCC);
-#endif
 
 #if defined(NV_DRM_CONNECTOR_ATTACH_HDR_OUTPUT_METADATA_PROPERTY_PRESENT)
 static int
@@ -523,25 +524,17 @@ nv_drm_connector_new(struct drm_device *dev,
 
 #if defined(NV_DRM_CONNECTOR_ATTACH_HDR_OUTPUT_METADATA_PROPERTY_PRESENT)
     if (nv_connector->type == NVKMS_CONNECTOR_TYPE_HDMI) {
-#if defined(NV_DRM_MODE_CREATE_DP_COLORSPACE_PROPERTY_HAS_SUPPORTED_COLORSPACES_ARG)
-        if (drm_mode_create_hdmi_colorspace_property(
+        if (nv_drm_mode_create_hdmi_colorspace_property(
                 &nv_connector->base,
                 __nv_drm_connector_supported_colorspaces) == 0) {
-#else
-        if (drm_mode_create_hdmi_colorspace_property(&nv_connector->base) == 0) {
-#endif
-            drm_connector_attach_colorspace_property(&nv_connector->base);
+            nv_drm_connector_attach_colorspace_property(&nv_connector->base);
         }
         drm_connector_attach_hdr_output_metadata_property(&nv_connector->base);
     } else if (nv_connector->type == NVKMS_CONNECTOR_TYPE_DP) {
-#if defined(NV_DRM_MODE_CREATE_DP_COLORSPACE_PROPERTY_HAS_SUPPORTED_COLORSPACES_ARG)
-        if (drm_mode_create_dp_colorspace_property(
+        if (nv_drm_mode_create_dp_colorspace_property(
                 &nv_connector->base,
                 __nv_drm_connector_supported_colorspaces) == 0) {
-#else
-        if (drm_mode_create_dp_colorspace_property(&nv_connector->base) == 0) {
-#endif
-            drm_connector_attach_colorspace_property(&nv_connector->base);
+            nv_drm_connector_attach_colorspace_property(&nv_connector->base);
         }
         drm_connector_attach_hdr_output_metadata_property(&nv_connector->base);
     }

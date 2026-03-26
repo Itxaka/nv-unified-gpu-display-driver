@@ -2002,7 +2002,11 @@ static void fill_dst_pfn(uvm_va_block_t *va_block,
 
     hmm_mark_gpu_chunk_referenced(va_block, gpu, gpu_chunk);
     UVM_ASSERT(!page_count(dpage));
+#ifdef NV_ZONE_DEVICE_PAGE_INIT_HAS_PGMAP_ORDER_ARGS
+    zone_device_page_init(dpage, page_pgmap(dpage), 0);
+#else
     zone_device_page_init(dpage);
+#endif
     dpage->zone_device_data = gpu_chunk;
     atomic64_inc(&va_block->hmm.va_space->hmm.allocated_page_count);
 

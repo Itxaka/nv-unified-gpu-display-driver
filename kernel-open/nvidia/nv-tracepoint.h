@@ -23,6 +23,8 @@
 
 #include "conftest.h"
 
+#include <linux/version.h>
+
 #undef TRACE_SYSTEM
 #define TRACE_SYSTEM nvidia
 
@@ -44,7 +46,8 @@ TRACE_EVENT(nvidia_dev_xid,
     ),
 
     TP_fast_assign(
-#if NV_ASSIGN_STR_ARGUMENT_COUNT == 1
+#if (NV_ASSIGN_STR_ARGUMENT_COUNT == 1) || \
+    (LINUX_VERSION_CODE >= KERNEL_VERSION(6, 10, 0))
         __assign_str(dev);
         __assign_str(msg);
 #else
