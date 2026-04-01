@@ -3056,7 +3056,11 @@ static vm_fault_t devmem_fault_entry(struct vm_fault *vmf)
 
 static const struct dev_pagemap_ops uvm_pmm_devmem_ops =
 {
+#if defined(NV_PAGEMAP_OPS_HAS_FOLIO_FREE)
+    .folio_free = devmem_folio_free,
+#else
     .page_free = devmem_page_free,
+#endif
     .migrate_to_ram = devmem_fault_entry,
 };
 
@@ -3213,7 +3217,11 @@ static void device_p2p_page_free(struct page *page)
 
 static const struct dev_pagemap_ops uvm_device_p2p_pgmap_ops =
 {
-    .page_free = device_p2p_page_free,
+#if defined(NV_PAGEMAP_OPS_HAS_FOLIO_FREE)
+    .folio_free = device_coherent_folio_free,
+#else
+    .page_free = device_coherent_page_free,
+#endif
 };
 
 void uvm_pmm_gpu_device_p2p_init(uvm_gpu_t *gpu)
