@@ -1960,6 +1960,8 @@ nv_pci_probe
 
         NV_DEV_PRINTF(NV_DBG_INFO, nv, "ATS supported by this GPU!\n");
 
+#if defined(NV_IS_EXPORT_SYMBOL_GPL_iommu_dev_enable_feature) && \
+    NV_IS_EXPORT_SYMBOL_GPL_iommu_dev_enable_feature
 #if defined(CONFIG_IOMMU_SVA) && \
     (defined(NV_IOASID_GET_PRESENT) || defined(NV_MM_PASID_DROP_PRESENT))
         ret = iommu_dev_enable_feature(nvl->dev, IOMMU_DEV_FEAT_SVA);
@@ -1982,6 +1984,7 @@ nv_pci_probe
                       "Enabling SMMU SVA feature failed due to lack of necessary kernel configs.\n");
         nv->ats_support = NV_FALSE;
 #endif
+#endif // NV_IS_EXPORT_SYMBOL_GPL_iommu_dev_enable_feature
     }
 
     if (pci_devid_is_self_hosted(pci_dev->device))
@@ -2182,8 +2185,8 @@ static void nv_pci_remove_helper(struct pci_dev *pci_dev, bool block_if_gpu_in_u
 
     nv = NV_STATE_PTR(nvl);
 
-#if defined(CONFIG_IOMMU_SVA) && \
-    (defined(NV_IOASID_GET_PRESENT) || defined(NV_MM_PASID_DROP_PRESENT))
+#if defined(NV_IS_EXPORT_SYMBOL_GPL_iommu_dev_enable_feature) && \
+    NV_IS_EXPORT_SYMBOL_GPL_iommu_dev_enable_feature
     if (nv->ats_support)
     {
         int ret;
