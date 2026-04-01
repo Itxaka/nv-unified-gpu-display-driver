@@ -1359,6 +1359,27 @@ compile_test() {
             compile_check_conftest "$CODE" "NV_DRM_AVAILABLE" "" "generic"
         ;;
 
+        dev_pagemap_ops_has_folio_free)
+            #
+            # Determine if the zone device now uses a folio_free() as the callback
+            # function instead of page_free()
+            #
+            # This change was introduced by 3a5a06554566
+            # (mm/zone_device: rename page_free callback to folio_free)
+            #
+            # in v6.19.
+            #
+            CODE="
+            #include <linux/memremap.h>
+            void test_folio_free(struct folio *folio) {
+            }
+            void set_folio_free_ops(void) {
+                struct dev_pagemap_ops ops;
+                ops.folio_free = test_folio_free;
+            }"
+            compile_check_conftest "$CODE" "NV_PAGEMAP_OPS_HAS_FOLIO_FREE" "" "types"
+        ;;
+
         drm_sysfs_connector_property_event)
             #
             # Determine if drm_sysfs_connector_property_event() is present.
