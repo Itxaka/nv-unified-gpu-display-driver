@@ -41,13 +41,8 @@ TRACE_EVENT(nvswitch_dev_sxid,
     ),
 
     TP_fast_assign(
-#if NV_ASSIGN_STR_ARGUMENT_COUNT == 1
         __assign_str(dev);
         __assign_str(msg);
-#else
-        __assign_str(dev, pci_name(pdev));
-        __assign_str(msg, msg);
-#endif
         __entry->error_code = error_code;
     ),
 
