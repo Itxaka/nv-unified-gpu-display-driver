@@ -4202,14 +4202,18 @@ compile_test() {
             # Determine if the 'vm_area_struct' structure has
             # const 'vm_flags'.
             #
-            # A union of '__vm_flags' and 'const vm_flags' was added by
-            # commit bc292ab00f6c ("mm: introduce vma->vm_flags wrapper
-            # functions") in v6.3.
+            # vm_flags_set()/vm_flags_clear() wrappers are used when vm_flags
+            # is read-only (or abstracted behind wrappers in newer kernels).
+            #
+            # Older kernels without read-only vm_flags do not provide these
+            # helpers.
             #
             CODE="
-            #include <linux/mm_types.h>
-            int conftest_vm_area_struct_has_const_vm_flags(void) {
-                return offsetof(struct vm_area_struct, __vm_flags);
+            #include <linux/mm.h>
+            void conftest_vm_area_struct_has_const_vm_flags(struct vm_area_struct *vma,
+                                                            vm_flags_t flags) {
+                vm_flags_set(vma, flags);
+                vm_flags_clear(vma, flags);
             }"
 
             compile_check_conftest "$CODE" "NV_VM_AREA_STRUCT_HAS_CONST_VM_FLAGS" "" "types"
