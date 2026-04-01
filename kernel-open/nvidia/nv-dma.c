@@ -727,8 +727,11 @@ static NvBool nv_dma_use_map_resource
         return NV_FALSE;
 #endif
     }
-
+#if defined(NV_DMA_MAP_OPS_HAS_MAP_PHYS)
+    return (ops->map_phys != NULL);
+#else
     return (ops->map_resource != NULL);
+#endif
 }
 
 /* DMA-map a peer device's C2C aperture for peer access. */
