@@ -33,6 +33,7 @@
 
 #include <drm/drm_device.h>
 #include <drm/drm_gem.h>
+#include <drm/drm_print.h>
 
 #include "nvidia-drm-os-interface.h"
 

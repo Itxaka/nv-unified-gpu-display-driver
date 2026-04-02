@@ -30,7 +30,6 @@ NVIDIA_DRM_SOURCES += nvidia-drm/nvidia-drm-os-interface.c
 # Register the conftests needed by nvidia-drm.ko
 #
 
-NV_CONFTEST_GENERIC_COMPILE_TESTS += drm_available
 NV_CONFTEST_GENERIC_COMPILE_TESTS += drm_atomic_available
 NV_CONFTEST_GENERIC_COMPILE_TESTS += is_export_symbol_gpl_refcount_inc
 NV_CONFTEST_GENERIC_COMPILE_TESTS += is_export_symbol_gpl_refcount_dec_and_test

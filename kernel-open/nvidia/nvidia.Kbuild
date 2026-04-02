@@ -240,7 +240,6 @@ NV_CONFTEST_GENERIC_COMPILE_TESTS += pm_runtime_available
 NV_CONFTEST_GENERIC_COMPILE_TESTS += pm_domain_available
 NV_CONFTEST_GENERIC_COMPILE_TESTS += vm_fault_t
 NV_CONFTEST_GENERIC_COMPILE_TESTS += pci_class_multimedia_hd_audio
-NV_CONFTEST_GENERIC_COMPILE_TESTS += drm_available
 NV_CONFTEST_GENERIC_COMPILE_TESTS += dev_pagemap_ops_has_folio_free
 NV_CONFTEST_GENERIC_COMPILE_TESTS += vfio_pci_core_available
 NV_CONFTEST_GENERIC_COMPILE_TESTS += cmd_uphy_display_port_init
