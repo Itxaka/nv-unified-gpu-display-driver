@@ -1330,33 +1330,29 @@ compile_test() {
             compile_check_conftest "$CODE" "NV_EVENTFD_SIGNAL_HAS_COUNTER_ARG" "" "types"
         ;;
 
-        drm_available)
-            # Determine if the DRM subsystem is usable
+
+        zone_device_page_init_has_pgmap_and_order_args)
+            #
+            # Determine if the zone_device_page_init() has two additional
+            # arguments
+            #
+            # This change was introduced by d245f9b4ab80
+            # ("mm/zone_device: support large zone device private folios")
+            #
+            # It was further amended in 9387a71ec62c
+            # (mm/zone_device: reinitialize large zone device private folios)
+            #
+            # both commits are in linux-next, expected in v6.19.
+            #
             CODE="
-            #if defined(NV_DRM_DRMP_H_PRESENT)
-            #include <drm/drmP.h>
-            #endif
+            #include <linux/memremap.h>
+            void init_page(void) {
+                struct page *page;
+                struct dev_pagemap *pgmap;
 
-            #include <drm/drm_drv.h>
-
-            #if !defined(CONFIG_DRM) && !defined(CONFIG_DRM_MODULE) && !defined(__FreeBSD__)
-            #error DRM not enabled
-            #endif
-
-            void conftest_drm_available(void) {
-                struct drm_driver drv;
-
-                /* 2013-10-02 1bb72532ac260a2d3982b40bdd4c936d779d0d16 */
-                (void)drm_dev_alloc;
-
-                /* 2013-10-02 c22f0ace1926da399d9a16dfaf09174c1b03594c */
-                (void)drm_dev_register;
-
-                /* 2013-10-02 c3a49737ef7db0bdd4fcf6cf0b7140a883e32b2a */
-                (void)drm_dev_unregister;
+                zone_device_page_init(page, pgmap, 0);
             }"
-
-            compile_check_conftest "$CODE" "NV_DRM_AVAILABLE" "" "generic"
+            compile_check_conftest "$CODE" "NV_ZONE_DEVICE_PAGE_INIT_HAS_PGMAP_AND_ORDER_ARGS" "" "types"
         ;;
 
         dev_pagemap_ops_has_folio_free)
@@ -1563,17 +1559,26 @@ compile_test() {
                 #include <drm/drm_atomic_uapi.h>
                 #endif
                 void conftest_drm_atomic_set_mode_prop_for_crtc(void) {
-                    drm_atomic_set_mode_prop_for_crtc();
+                    struct drm_crtc_state *state = NULL;
+                    struct drm_property_blob *blob = NULL;
+                    int __attribute__((unused)) c =
+                        drm_atomic_set_mode_prop_for_crtc(state, blob);
                 }" > conftest$$.c;
 
-                $CC $CFLAGS -c conftest$$.c > /dev/null 2>&1
+                # Require a real prototype: global conftest CFLAGS use
+                # -Wno-implicit-function-declaration, which made a zero-argument
+                # call "succeed" with an implicit declaration and incorrectly
+                # disabled NV_DRM_ATOMIC_MODESET_AVAILABLE on modern kernels.
+                $CC $CFLAGS -Wimplicit-function-declaration \
+                    -Werror=implicit-function-declaration \
+                    -c conftest$$.c > /dev/null 2>&1
                 rm -f conftest$$.c
 
                 if [ -f conftest$$.o ]; then
                     rm -f conftest$$.o
-                    echo "#undef NV_DRM_ATOMIC_MODESET_AVAILABLE" | append_conftest "generic"
-                else
                     echo "#define NV_DRM_ATOMIC_MODESET_AVAILABLE" | append_conftest "generic"
+                else
+                    echo "#undef NV_DRM_ATOMIC_MODESET_AVAILABLE" | append_conftest "generic"
                 fi
             else
                 echo "#undef NV_DRM_ATOMIC_MODESET_AVAILABLE" | append_conftest "generic"
