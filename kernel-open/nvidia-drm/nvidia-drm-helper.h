@@ -63,6 +63,22 @@ nv_drm_prime_pages_to_sg(struct drm_device *dev,
 #endif
 }
 
+/*
+ * DRM_UNLOCKED was removed with commit 2798ffcc1d6a ("drm: Remove locking for
+ * legacy ioctls and DRM_UNLOCKED") in v6.8, but it was previously made
+ * implicit for all non-legacy DRM driver IOCTLs since Linux v4.10 commit
+ * fa5386459f06 "drm: Used DRM_LEGACY for all legacy functions" (Linux v4.4
+ * commit ea487835e887 "drm: Enforce unlocked ioctl operation for kms driver
+ * ioctls" previously did it only for drivers that set the DRM_MODESET flag), so
+ * it was effectively a no-op anyway.
+ *
+ * Must be visible for drm_ioctl_desc tables even when NV_DRM_ATOMIC_MODESET_AVAILABLE
+ * is false (helpers/macros that only apply to atomic KMS live below).
+ */
+#if !defined(NV_DRM_UNLOCKED_IOCTL_FLAG_PRESENT)
+#define DRM_UNLOCKED 0
+#endif
+
 #if defined(NV_DRM_ATOMIC_MODESET_AVAILABLE)
 
 /*
@@ -443,19 +459,6 @@ static inline int nv_drm_format_num_planes(uint32_t format)
                              (((g) & 0x3) << 20) | \
                              (((s) & 0x1) << 22) | \
                              (((c) & 0x7) << 23)))
-#endif
-
-/*
- * DRM_UNLOCKED was removed with commit 2798ffcc1d6a ("drm: Remove locking for
- * legacy ioctls and DRM_UNLOCKED") in v6.8, but it was previously made
- * implicit for all non-legacy DRM driver IOCTLs since Linux v4.10 commit
- * fa5386459f06 "drm: Used DRM_LEGACY for all legacy functions" (Linux v4.4
- * commit ea487835e887 "drm: Enforce unlocked ioctl operation for kms driver
- * ioctls" previously did it only for drivers that set the DRM_MODESET flag), so
- * it was effectively a no-op anyway.
- */
-#if !defined(NV_DRM_UNLOCKED_IOCTL_FLAG_PRESENT)
-#define DRM_UNLOCKED 0
 #endif
 
 /*

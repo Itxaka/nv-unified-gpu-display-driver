@@ -124,8 +124,9 @@ static const char* nv_get_input_colorspace_name(
     }
 };
 
-static char* nv_get_transfer_function_name(
-    enum nv_drm_transfer_function tf)
+#if defined(NV_DRM_ATOMIC_MODESET_AVAILABLE)
+
+static char *nv_get_transfer_function_name(enum nv_drm_transfer_function tf)
 {
     switch (tf) {
         case NV_DRM_TRANSFER_FUNCTION_LINEAR:
@@ -143,9 +144,7 @@ static char* nv_get_transfer_function_name(
         case NV_DRM_TRANSFER_FUNCTION_DEFAULT:
             return "Default";
     }
-};
-
-#if defined(NV_DRM_ATOMIC_MODESET_AVAILABLE)
+}
 
 #if defined(NV_DRM_OUTPUT_POLL_CHANGED_PRESENT)
 static void nv_drm_output_poll_changed(struct drm_device *dev)
@@ -486,8 +485,6 @@ static void nv_drm_enumerate_encoders_and_connectors
     }
 }
 
-#endif /* NV_DRM_ATOMIC_MODESET_AVAILABLE */
-
 /*!
  * 'NV_DRM_OUT_FENCE_PTR' is an atomic per-plane property that clients can use
  * to request an out-fence fd for a particular plane that's being flipped.
@@ -648,7 +645,6 @@ static int nv_drm_create_properties(struct nv_drm_device *nv_dev)
     return 0;
 }
 
-#if defined(NV_DRM_ATOMIC_MODESET_AVAILABLE)
 /*
  * We can't just call drm_kms_helper_hotplug_event directly because
  * fbdev_generic may attempt to set a mode from inside the hotplug event
@@ -1571,6 +1567,8 @@ static int nv_drm_open(struct drm_device *dev, struct drm_file *filep)
     return 0;
 }
 
+#if defined(NV_DRM_ATOMIC_MODESET_AVAILABLE)
+
 static struct drm_master *nv_drm_find_lessee(struct drm_master *master,
                                              int lessee_id)
 {
@@ -1734,6 +1732,15 @@ static long nv_drm_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
 
     return retcode;
 }
+
+#else /* !defined(NV_DRM_ATOMIC_MODESET_AVAILABLE) */
+
+static long nv_drm_ioctl(struct file *filp, unsigned int cmd, unsigned long arg)
+{
+    return drm_ioctl(filp, cmd, arg);
+}
+
+#endif /* defined(NV_DRM_ATOMIC_MODESET_AVAILABLE) */
 
 static const struct file_operations nv_drm_fops = {
     .owner          = THIS_MODULE,
