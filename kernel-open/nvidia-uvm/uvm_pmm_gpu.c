@@ -3220,12 +3220,17 @@ static void device_p2p_page_free(struct page *page)
     nv_kref_put(&p2p_mem->refcount, device_p2p_page_free_wake);
 }
 
+static void device_p2p_folio_free(struct folio *folio)
+{
+    device_p2p_page_free(&folio->page);
+}
+
 static const struct dev_pagemap_ops uvm_device_p2p_pgmap_ops =
 {
 #if defined(NV_PAGEMAP_OPS_HAS_FOLIO_FREE)
-    .folio_free = device_coherent_folio_free,
+    .folio_free = device_p2p_folio_free,
 #else
-    .page_free = device_coherent_page_free,
+    .page_free = device_p2p_page_free,
 #endif
 };
 
